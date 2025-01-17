@@ -17,8 +17,6 @@ class CustomRegisterForm(UserCreationForm):
             'password2': forms.PasswordInput(attrs={'class': 'form-control'}),
         }
 
-class PostForm(forms.Form):
-    title = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
-    content = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 5}), min_length=10)
-    img = forms.ImageField()
+
+    
 
