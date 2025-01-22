@@ -18,7 +18,7 @@ class Post(models.Model):
     )
     title = models.CharField(max_length=200)
     content = models.TextField()
-    image = models.ImageField(upload_to='images/')
+    image = models.ImageField(upload_to='media/images/')
     post_date = models.DateTimeField(default=timezone.now)
     tags = models.CharField(max_length=1, choices=STORY_TYPES, default='G')
     
