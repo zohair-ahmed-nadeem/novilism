@@ -17,15 +17,26 @@ class Post(models.Model):
         ('T', 'Thriller'),
         ('G', 'General'),
     )
-    user = models.ForeignKey(User, on_delete=models.CASCADE, default=1)  # Temporarily set default user ID
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
     content = models.TextField()
     image = models.ImageField(upload_to='images/')
     post_date = models.DateTimeField(default=timezone.now)
     tags = models.CharField(max_length=1, choices=STORY_TYPES, default='G')
+    view_count = models.PositiveIntegerField(default=0)
+    likes = models.ManyToManyField(User, related_name='post_likes', blank=True)  # Add this line
     
     def __str__(self):
         return self.title
+
+class Comment(models.Model):
+    post = models.ForeignKey(Post, related_name='comments', on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    content = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'Comment by {self.user.username} on {self.post.title}'
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)

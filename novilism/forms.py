@@ -19,5 +19,10 @@ class CustomRegisterForm(UserCreationForm):
             'password2': forms.PasswordInput(attrs={'class': 'form-control'}),
         }
 
-    
-
+    def clean_username(self):
+        username = self.cleaned_data.get('username')
+        if not username:
+            raise forms.ValidationError("Username is required.")
+        if not username.isalnum() and not all(char in '@./+/-/_' for char in username):
+            raise forms.ValidationError("Username must contain only letters, digits, and @/./+/-/_ characters.")
+        return username

@@ -11,6 +11,7 @@
     <header>
         {% if user.is_authenticated %}
             <span class="username">{{ user.username }}</span>
+            <span> {{ user.profile_picture }} </span>
         {% else %}
             <span class="username"></span>
         {% endif %}
