@@ -41,9 +41,14 @@ def logout_view(request):
     logout(request)
     return redirect('home')
 
-def h(request):
-    posts = Post.objects.all()
-    return render(request, 'website/index.html', {'posts': posts})
+def home(request):
+    tag = request.GET.get('tag')
+    if tag:
+        posts = Post.objects.filter(tags=tag)
+    else:
+        posts = Post.objects.all()
+    return render(request, 'website/index.html', {'posts': posts, 'tag': tag})
+
 
 @login_required
 def edit_post_view(request, post_id):

@@ -56,18 +56,20 @@
 
 <script>
 document.getElementById('like-button').addEventListener('click', function(event) {
-    if (!{{ request.user.is_authenticated|yesno:"true,false" }}) {
+    if (!isAuthenticated) {
         event.preventDefault();
         alert('You need to be logged in to like this post.');
     }
 });
 
 document.getElementById('comment-button').addEventListener('click', function(event) {
-    if (!{{ request.user.is_authenticated|yesno:"true,false" }}) {
+    if (!isAuthenticated) {
         event.preventDefault();
         alert('You need to be logged in to comment on this post.');
     }
 });
+
+const isAuthenticated = "{{ request.user.is_authenticated|yesno:'true,false' }}";
 </script>
 
 {% endblock %}

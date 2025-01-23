@@ -1,18 +1,38 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-<h1>Home</h1>
-
 <h1>All Posts</h1>
+
+<!-- Filter form -->
+<form method="get" action="{% url 'home' %}">
+    <label for="tag">Filter by tag:</label>
+    <select name="tag" id="tag">
+        <option value="">All</option>
+        <option value="F" {% if tag == "F" %}selected{% endif %}>Fiction</option>
+        <option value="N" {% if tag == "N" %}selected{% endif %}>Non-Fiction</option>
+        <option value="P" {% if tag == "P" %}selected{% endif %}>Poetry</option>
+        <option value="R" {% if tag == "R" %}selected{% endif %}>Romantic</option>
+        <option value="H" {% if tag == "H" %}selected{% endif %}>Horror</option>
+        <option value="S" {% if tag == "S" %}selected{% endif %}>Science Fiction</option>
+        <option value="M" {% if tag == "M" %}selected{% endif %}>Mystery</option>
+        <option value="C" {% if tag == "C" %}selected{% endif %}>Comedy</option>
+        <option value="D" {% if tag == "D" %}selected{% endif %}>Drama</option>
+        <option value="A" {% if tag == "A" %}selected{% endif %}>Action</option>
+        <option value="T" {% if tag == "T" %}selected{% endif %}>Thriller</option>
+        <option value="G" {% if tag == "G" %}selected{% endif %}>General</option>
+    </select>
+    <button type="submit">Filter</button>
+</form>
+
 <div>
-    
     {% for post in posts %}
         <div>
             <div class="post-owner">
-                <img src="{{ post.owner.profile.profile_picture.url }}" alt="{{ post.owner.username }}">
-                <p>{{ post.owner.username }}</p>
+                <img src="{{ post.user.profile.profile_picture.url }}" alt="{{ post.user.username }}">
+                <p>{{ post.user.username }}</p>
             </div>
             <h2>{{ post.title }}</h2>
+            <p>Posted on: {{ post.post_date|date:"F j, Y, g:i a" }}</p> <!-- Display post creation time -->
             <img src="{{ post.image.url }}" alt="{{ post.title }}" style="max-width: 300px; height: auto;">
             <a href="{% url 'post_detail' post.id %}">Read More</a>
         </div>

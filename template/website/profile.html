@@ -1,0 +1,22 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<h1>Edit Profile</h1>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.username.label_tag }} {{ form.username }}
+    {{ form.password.label_tag }} {{ form.password }}
+    {{ form.profile_picture.label_tag }} {{ form.profile_picture }}
+    <img id="profile-picture-preview" src="{% if form.instance.profile_picture %}{{ form.instance.profile_picture.url }}{% endif %}" alt="Profile Picture" style="max-width: 100px; height: auto;">
+    <button type="submit">Save changes</button>
+</form>
+
+<script>
+document.getElementById('id_profile_picture').addEventListener('change', function(event) {
+    const [file] = event.target.files;
+    if (file) {
+        document.getElementById('profile-picture-preview').src = URL.createObjectURL(file);
+    }
+});
+</script>
+{% endblock %}
