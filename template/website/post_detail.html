@@ -54,22 +54,25 @@
     {% endif %}
 {% endif %}
 
+<!-- Report button -->
+{% if request.user.is_authenticated %}
+    <a href="{% url 'report_post' post.id %}">Report Post</a>
+{% endif %}
+
 <script>
 document.getElementById('like-button').addEventListener('click', function(event) {
-    if (!isAuthenticated) {
+    if (!JSON.parse('{{ request.user.is_authenticated|yesno:"true,false" }}')) {
         event.preventDefault();
         alert('You need to be logged in to like this post.');
     }
 });
 
 document.getElementById('comment-button').addEventListener('click', function(event) {
-    if (!isAuthenticated) {
+    if (!JSON.parse('{{ request.user.is_authenticated|yesno:"true,false" }}')) {
         event.preventDefault();
         alert('You need to be logged in to comment on this post.');
     }
 });
-
-const isAuthenticated = "{{ request.user.is_authenticated|yesno:'true,false' }}";
 </script>
 
 {% endblock %}

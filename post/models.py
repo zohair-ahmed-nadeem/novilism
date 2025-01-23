@@ -67,3 +67,22 @@ class Collaborator(models.Model):
     def __str__(self):
         return self.name
 
+class Report(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    post = models.ForeignKey('Post', on_delete=models.CASCADE, related_name='reports')
+    reason = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    post_owner_email = models.EmailField(blank=True, null=True)
+    reporter_email = models.EmailField(blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        if not self.post_owner_email:
+            self.post_owner_email = self.post.user.email
+        if not self.reporter_email:
+            self.reporter_email = self.user.email
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f'Report by {self.user.username} on {self.post.title}'
+
+

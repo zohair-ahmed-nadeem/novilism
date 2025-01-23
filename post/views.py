@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from post.models import Post, Comment, Collaborator
-from post.forms import PostForm , ProfileForm, FeedbackForm
+from post.forms import PostForm , ProfileForm, FeedbackForm, ReportForm
 from django.db.models import Count
 import random
 
@@ -121,3 +121,17 @@ def feedback_view(request):
 def collaborators_view(request):
     collaborators = Collaborator.objects.all()
     return render(request, 'website/collaborators.html', {'collaborators': collaborators})
+
+def report_post_view(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    if request.method == 'POST':
+        form = ReportForm(request.POST)
+        if form.is_valid():
+            report = form.save(commit=False)
+            report.user = request.user
+            report.post = post
+            report.save()
+            return redirect('post_detail', post_id=post.id)
+    else:
+        form = ReportForm()
+    return render(request, 'website/report_post.html', {'form': form, 'post': post})
