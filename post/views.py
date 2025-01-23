@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from post.models import Post, Comment
-from post.forms import PostForm , ProfileForm
+from post.forms import PostForm , ProfileForm, FeedbackForm
 
 
 @login_required
@@ -83,3 +83,16 @@ def edit_profile_view(request):
     else:
         form = ProfileForm(instance=profile)
     return render(request, 'website/profile.html', {'form': form})
+
+@login_required
+def feedback_view(request):
+    if request.method == 'POST':
+        form = FeedbackForm(request.POST)
+        if form.is_valid():
+            feedback = form.save(commit=False)
+            feedback.user = request.user
+            feedback.save()
+            return redirect('home')
+    else:
+        form = FeedbackForm()
+    return render(request, 'website/feedback.html', {'form': form})

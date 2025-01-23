@@ -45,3 +45,16 @@ class Profile(models.Model):
     def __str__(self):
         return self.user.username
     
+class Feedback(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    message = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    email = models.EmailField(blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        if not self.email and self.user:
+            self.email = self.user.email
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f'Feedback from {self.user.username if self.user else "Anonymous"} on {self.created_at}'

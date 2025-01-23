@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from .models import Post, Profile
+from .models import Post, Profile , Feedback
 
 class PostForm(forms.ModelForm):
     class Meta:
@@ -34,3 +34,11 @@ class ProfileForm(forms.ModelForm):
             user.save()
             profile.save()
         return profile
+
+class FeedbackForm(forms.ModelForm):
+    class Meta:
+        model = Feedback
+        fields = ['message']
+        widgets = {
+            'message': forms.Textarea(attrs={'class': 'form-control', 'rows': 5}),
+        }

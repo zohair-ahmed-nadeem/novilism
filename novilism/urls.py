@@ -13,6 +13,7 @@ urlpatterns = [
     path('logout/', views.logout_view, name='logout'),
     path('post/', include('post.urls')),
     path('profile/', post_views.edit_profile_view, name='profile'),
+    path('feedback/', post_views.feedback_view, name='feedback'),
 ]
 
 if settings.DEBUG:
