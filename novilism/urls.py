@@ -15,6 +15,7 @@ urlpatterns = [
     path('profile/', post_views.edit_profile_view, name='profile'),
     path('feedback/', post_views.feedback_view, name='feedback'),
     path('collaborators/', post_views.collaborators_view, name='collaborators'),
+    path('search/', post_views.search_posts, name='search_posts'),
 ]
 
 if settings.DEBUG:

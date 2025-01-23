@@ -3,6 +3,14 @@
 {% block content %}
 <h1>All Posts</h1>
 
+<!-- Search bar -->
+<div style="position: relative;">
+    <input type="text" id="search-bar" placeholder="Search posts..." onkeyup="searchPosts()" style="width: 100%; padding: 10px; box-sizing: border-box;">
+    <div id="search-results" style="border: 1px solid #ccc; display: none; position: absolute; background: white; z-index: 1000; width: 100%;">
+        <!-- Search results will be appended here -->
+    </div>
+</div>
+
 <!-- Filter form -->
 <form method="get" action="{% url 'home' %}">
     <label for="tag">Filter by tag:</label>
@@ -83,5 +91,31 @@
         </div>
     {% endfor %}
 </div>
+
+<script>
+function searchPosts() {
+    const query = document.getElementById('search-bar').value;
+    if (query.length > 0) {
+        fetch(`/search/?q=${query}`)
+            .then(response => response.json())
+            .then(data => {
+                const searchResults = document.getElementById('search-results');
+                searchResults.innerHTML = '';
+                if (data.length > 0) {
+                    data.forEach(post => {
+                        const postElement = document.createElement('div');
+                        postElement.innerHTML = `<a href="/post/${post.id}/" style="display: block; padding: 10px; text-decoration: none; color: black;">${post.title}</a>`;
+                        searchResults.appendChild(postElement);
+                    });
+                    searchResults.style.display = 'block';
+                } else {
+                    searchResults.style.display = 'none';
+                }
+            });
+    } else {
+        document.getElementById('search-results').style.display = 'none';
+    }
+}
+</script>
 
 {% endblock %}

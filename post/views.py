@@ -4,6 +4,7 @@ from post.models import Post, Comment, Collaborator
 from post.forms import PostForm , ProfileForm, FeedbackForm, ReportForm
 from django.db.models import Count
 import random
+from django.http import JsonResponse
 
 
 @login_required
@@ -135,3 +136,10 @@ def report_post_view(request, post_id):
     else:
         form = ReportForm()
     return render(request, 'website/report_post.html', {'form': form, 'post': post})
+
+def search_posts(request):
+    if 'q' in request.GET:
+        query = request.GET.get('q')
+        posts = Post.objects.filter(title__icontains=query).values('id', 'title')
+        return JsonResponse(list(posts), safe=False)
+    return JsonResponse([], safe=False)

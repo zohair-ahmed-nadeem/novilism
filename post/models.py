@@ -25,7 +25,7 @@ class Post(models.Model):
     tags = models.CharField(max_length=1, choices=STORY_TYPES, default='G')
     view_count = models.PositiveIntegerField(default=0)
     likes = models.ManyToManyField(User, related_name='post_likes', blank=True)
-    
+
     def __str__(self):
         return self.title
 
