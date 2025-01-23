@@ -1,0 +1,15 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<h1>Collaborators</h1>
+<div>
+    {% for collaborator in collaborators %}
+        <div>
+            <a href="{{ collaborator.profile_link }}" target="_blank">
+                <img src="{{ collaborator.profile_picture.url }}" alt="{{ collaborator.name }}" style="max-width: 100px; height: auto;">
+            </a>
+            <p>{{ collaborator.name }}</p>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

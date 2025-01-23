@@ -1,7 +1,9 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
-from post.models import Post, Comment
+from post.models import Post, Comment, Collaborator
 from post.forms import PostForm , ProfileForm, FeedbackForm
+from django.db.models import Count
+import random
 
 
 @login_required
@@ -23,7 +25,26 @@ def home(request):
         posts = Post.objects.filter(tags=tag)
     else:
         posts = Post.objects.all()
-    return render(request, 'website/index.html', {'posts': posts, 'tag': tag})
+
+    top_viewed_posts = Post.objects.order_by('-view_count')[:5]
+    top_liked_posts = Post.objects.annotate(like_count=Count('likes')).order_by('-like_count')[:5]
+    recent_posts = Post.objects.order_by('-post_date')[:5]
+    collaborators = Collaborator.objects.all()
+
+    # Get random posts excluding the ones already selected
+    selected_posts_ids = set(post.id for post in top_viewed_posts) | set(post.id for post in top_liked_posts) | set(post.id for post in recent_posts)
+    random_posts = Post.objects.exclude(id__in=selected_posts_ids)
+    random_posts = random.sample(list(random_posts), min(len(random_posts), 5))
+
+    return render(request, 'website/index.html', {
+        'posts': posts,
+        'tag': tag,
+        'top_viewed_posts': top_viewed_posts,
+        'top_liked_posts': top_liked_posts,
+        'recent_posts': recent_posts,
+        'random_posts': random_posts,
+        'collaborators': collaborators,
+    })
 
 
 def post_detail(request, post_id):
@@ -96,3 +117,7 @@ def feedback_view(request):
     else:
         form = FeedbackForm()
     return render(request, 'website/feedback.html', {'form': form})
+
+def collaborators_view(request):
+    collaborators = Collaborator.objects.all()
+    return render(request, 'website/collaborators.html', {'collaborators': collaborators})

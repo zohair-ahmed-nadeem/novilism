@@ -8,12 +8,13 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', post_views.home, name='home'),
+    path('post/', include('post.urls')),
     path('login/', views.login_view, name='login'),
     path('register/', views.register_view, name='register'),
     path('logout/', views.logout_view, name='logout'),
-    path('post/', include('post.urls')),
     path('profile/', post_views.edit_profile_view, name='profile'),
     path('feedback/', post_views.feedback_view, name='feedback'),
+    path('collaborators/', post_views.collaborators_view, name='collaborators'),
 ]
 
 if settings.DEBUG:

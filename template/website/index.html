@@ -24,18 +24,64 @@
     <button type="submit">Filter</button>
 </form>
 
+<!-- Top 5 Most Viewed Posts -->
+<h2>Top 5 Most Viewed Posts</h2>
 <div>
-    {% for post in posts %}
+    {% for post in top_viewed_posts %}
         <div>
-            <div class="post-owner">
-                <img src="{{ post.user.profile.profile_picture.url }}" alt="{{ post.user.username }}">
-                <p>{{ post.user.username }}</p>
-            </div>
-            <h2>{{ post.title }}</h2>
-            <p>Posted on: {{ post.post_date|date:"F j, Y, g:i a" }}</p> <!-- Display post creation time -->
-            <img src="{{ post.image.url }}" alt="{{ post.title }}" style="max-width: 300px; height: auto;">
+            <h3>{{ post.title }}</h3>
+            <p>Views: {{ post.view_count }}</p>
             <a href="{% url 'post_detail' post.id %}">Read More</a>
         </div>
     {% endfor %}
 </div>
+
+<!-- Top 5 Most Liked Posts -->
+<h2>Top 5 Most Liked Posts</h2>
+<div>
+    {% for post in top_liked_posts %}
+        <div>
+            <h3>{{ post.title }}</h3>
+            <p>Likes: {{ post.likes.count }}</p>
+            <a href="{% url 'post_detail' post.id %}">Read More</a>
+        </div>
+    {% endfor %}
+</div>
+
+<!-- Collaborators -->
+<h2>Collaborators</h2>
+<div>
+    {% for collaborator in collaborators %}
+        <div>
+            <a href="{{ collaborator.profile_link }}" target="_blank">
+                <img src="{{ collaborator.profile_picture.url }}" alt="{{ collaborator.name }}" style="max-width: 100px; height: auto;">
+            </a>
+            <p>{{ collaborator.name }}</p>
+        </div>
+    {% endfor %}
+</div>
+
+<!-- Recent Posts -->
+<h2>Recent Posts</h2>
+<div>
+    {% for post in recent_posts %}
+        <div>
+            <h3>{{ post.title }}</h3>
+            <p>Posted on: {{ post.post_date|date:"F j, Y, g:i a" }}</p>
+            <a href="{% url 'post_detail' post.id %}">Read More</a>
+        </div>
+    {% endfor %}
+</div>
+
+<!-- Random Posts -->
+<h2>Random Posts</h2>
+<div>
+    {% for post in random_posts %}
+        <div>
+            <h3>{{ post.title }}</h3>
+            <a href="{% url 'post_detail' post.id %}">Read More</a>
+        </div>
+    {% endfor %}
+</div>
+
 {% endblock %}

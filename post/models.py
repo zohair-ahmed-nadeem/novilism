@@ -58,3 +58,12 @@ class Feedback(models.Model):
 
     def __str__(self):
         return f'Feedback from {self.user.username if self.user else "Anonymous"} on {self.created_at}'
+    
+class Collaborator(models.Model):
+    name = models.CharField(max_length=100)
+    profile_picture = models.ImageField(upload_to='collaborators/')
+    profile_link = models.URLField()
+
+    def __str__(self):
+        return self.name
+
