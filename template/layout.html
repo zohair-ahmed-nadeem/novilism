@@ -1,36 +1,541 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-    <title>{% block title %}layot{% endblock  %}</title>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="theme-color" content="#ffffff">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="robots" content="index, follow">
+    <title>{% block title %}{% endblock %}</title>
+
+    <!-- Performance optimization: Preload critical resources -->
+    <link rel="preload" href="https://cdn.tailwindcss.com" as="script">
+    <link rel="preload"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap"
+        as="style">
+
+    <!-- {headerScripts} -->
+
+    <!-- Core CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#f8f8f8',
+                            100: '#e8e8e8',
+                            200: '#d3d3d3',
+                            300: '#a3a3a3',
+                            400: '#737373',
+                            500: '#525252',
+                            600: '#404040',
+                            700: '#262626',
+                            800: '#171717',
+                            900: '#0a0a0a',
+                            950: '#030303',
+                        },
+                        secondary: {
+                            50: '#f8f8f8',
+                            100: '#e8e8e8',
+                            200: '#d3d3d3',
+                            300: '#a3a3a3',
+                            400: '#737373',
+                            500: '#525252',
+                            600: '#404040',
+                            700: '#262626',
+                            800: '#171717',
+                            900: '#0a0a0a',
+                            950: '#030303',
+                        },
+                        accent: {
+                            50: '#f8f8f8',
+                            100: '#e8e8e8',
+                            200: '#d3d3d3',
+                            300: '#a3a3a3',
+                            400: '#737373',
+                            500: '#525252',
+                            600: '#404040',
+                            700: '#262626',
+                            800: '#171717',
+                            900: '#0a0a0a',
+                            950: '#030303',
+                        },
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif'],
+                        heading: ['Montserrat', 'Inter', 'system-ui', 'sans-serif'],
+                    },
+                    spacing: {
+                        '18': '4.5rem',
+                        '22': '5.5rem',
+                        '30': '7.5rem',
+                    },
+                    maxWidth: {
+                        '8xl': '88rem',
+                        '9xl': '96rem',
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-in',
+                        'fade-out': 'fadeOut 0.5s ease-out',
+                        'slide-up': 'slideUp 0.5s ease-out',
+                        'slide-down': 'slideDown 0.5s ease-out',
+                        'slide-left': 'slideLeft 0.5s ease-out',
+                        'slide-right': 'slideRight 0.5s ease-out',
+                        'scale-in': 'scaleIn 0.5s ease-out',
+                        'scale-out': 'scaleOut 0.5s ease-out',
+                        'spin-slow': 'spin 3s linear infinite',
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'bounce-slow': 'bounce 3s infinite',
+                        'float': 'float 3s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        fadeOut: {
+                            '0%': { opacity: '1' },
+                            '100%': { opacity: '0' },
+                        },
+                        slideUp: {
+                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        },
+                        slideDown: {
+                            '0%': { transform: 'translateY(-20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        },
+                        slideLeft: {
+                            '0%': { transform: 'translateX(20px)', opacity: '0' },
+                            '100%': { transform: 'translateX(0)', opacity: '1' },
+                        },
+                        slideRight: {
+                            '0%': { transform: 'translateX(-20px)', opacity: '0' },
+                            '100%': { transform: 'translateX(0)', opacity: '1' },
+                        },
+                        scaleIn: {
+                            '0%': { transform: 'scale(0.9)', opacity: '0' },
+                            '100%': { transform: 'scale(1)', opacity: '1' },
+                        },
+                        scaleOut: {
+                            '0%': { transform: 'scale(1.1)', opacity: '0' },
+                            '100%': { transform: 'scale(1)', opacity: '1' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                    },
+                    aspectRatio: {
+                        'portrait': '3/4',
+                        'landscape': '4/3',
+                        'ultrawide': '21/9',
+                    },
+                },
+            },
+            variants: {
+                extend: {
+                    opacity: ['disabled'],
+                    cursor: ['disabled'],
+                    backgroundColor: ['active', 'disabled'],
+                    textColor: ['active', 'disabled'],
+                },
+            },
+        }
+    </script>
+
+    <!-- Utilities and Components -->
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.13.3/cdn.min.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.45.1/apexcharts.min.js"></script>
+
+    <!-- Optimized Font Loading -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+        integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- Base Styles -->
+    <style>
+        * {
+            -ms-overflow-style: none;
+            /* IE and Edge */
+            scrollbar-width: none;
+            /* Firefox */
+        }
+
+        /* Webkit browsers like Chrome, Safari, newer Edge */
+        *::-webkit-scrollbar {
+            display: none;
+            width: 0;
+            height: 0;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 0px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #666;
+        }
+
+        /* Remove tap highlight on mobile */
+        * {
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Improve text rendering */
+        body {
+            text-rendering: optimizeLegibility;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Focus outline styles */
+        :focus-visible {
+            outline: 2px solid currentColor;
+            outline-offset: 2px;
+        }
+
+        /* Print styles */
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+
+            a[href]:after {
+                content: " (" attr(href) ")";
+            }
+        }
+    </style>
+
+    <!-- Enhanced Image Handler -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const imageObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        if (img.dataset.src) {
+                            const tempImage = new Image();
+                            tempImage.onload = () => {
+                                img.src = img.dataset.src;
+                                img.classList.remove('opacity-0');
+                                img.classList.add('opacity-100');
+                            };
+                            tempImage.src = img.dataset.src;
+                            img.removeAttribute('data-src');
+                            observer.unobserve(img);
+                        }
+                    }
+                });
+            }, {
+                rootMargin: '50px 0px',
+                threshold: 0.01
+            });
+
+            const loadImage = (img) => {
+                if ('loading' in HTMLImageElement.prototype) {
+                    img.loading = 'lazy';
+                }
+
+                img.classList.add('transition-opacity', 'duration-300', 'opacity-0');
+
+                img.onerror = () => {
+                    const width = img.getAttribute('width') || img.clientWidth || 300;
+                    const height = img.getAttribute('height') || img.clientHeight || 200;
+                    img.src = `https://placehold.co/${width}x${height}/DEDEDE/555555?text=Image+Unavailable`;
+                    img.alt = 'Image unavailable';
+                    img.classList.remove('opacity-0');
+                    img.classList.add('opacity-100', 'error-image');
+                };
+
+                if (img.dataset.src) {
+                    imageObserver.observe(img);
+                } else {
+                    img.classList.remove('opacity-0');
+                    img.classList.add('opacity-100');
+                }
+            };
+
+            document.querySelectorAll('img[data-src], img:not([data-src])').forEach(loadImage);
+
+            // Watch for dynamically added images
+            new MutationObserver((mutations) => {
+                mutations.forEach(mutation => {
+                    mutation.addedNodes.forEach(node => {
+                        if (node.nodeType === 1) {
+                            if (node.tagName === 'IMG') {
+                                loadImage(node);
+                            }
+                            node.querySelectorAll('img').forEach(loadImage);
+                        }
+                    });
+                });
+            }).observe(document.body, {
+                childList: true,
+                subtree: true
+            });
+        });
+
+        // Performance monitoring
+        if ('performance' in window && 'PerformanceObserver' in window) {
+            // Create performance observer
+            const observer = new PerformanceObserver((list) => {
+                const entries = list.getEntries();
+                entries.forEach((entry) => {
+                    if (entry.entryType === 'largest-contentful-paint') {
+                        // console.log(`LCP: ${entry.startTime}ms`);
+                    }
+                    if (entry.entryType === 'first-input') {
+                        // console.log(`FID: ${entry.processingStart - entry.startTime}ms`);
+                    }
+                    if (entry.entryType === 'layout-shift') {
+                        // console.log(`CLS: ${entry.value}`);
+                    }
+                });
+            });
+
+            // Observe performance metrics
+            observer.observe({ entryTypes: ['largest-contentful-paint', 'first-input', 'layout-shift'] });
+
+            // Log basic performance metrics
+            window.addEventListener('load', () => {
+                const timing = performance.getEntriesByType('navigation')[0];
+                console.log({
+                    'DNS Lookup': timing.domainLookupEnd - timing.domainLookupStart,
+                    'TCP Connection': timing.connectEnd - timing.connectStart,
+                    'DOM Content Loaded': timing.domContentLoadedEventEnd - timing.navigationStart,
+                    'Page Load': timing.loadEventEnd - timing.navigationStart
+                });
+            });
+        }
+
+        // Handle offline/online status
+        window.addEventListener('online', () => {
+            document.body.classList.remove('offline');
+            console.log('Connection restored');
+        });
+
+        window.addEventListener('offline', () => {
+            document.body.classList.add('offline');
+            console.log('Connection lost');
+        });
+    </script>
 </head>
-<body>
-    <header>
-        {% if user.is_authenticated %}
-            <span class="username">{{ user.username }}</span>
-            <span> {{ user.profile_picture }} </span>
-        {% else %}
-            <span class="username"></span>
-        {% endif %}
-        <div>
-            {% if user.is_authenticated %}
-                <a href="{% url 'logout' %}">Logout</a>
-            {% else %}
-                <a href="{% url 'login' %}">Login</a>
-                <a href="{% url 'register' %}">Register</a>
-            {% endif %}
-        </div>
-        <div>
-            {% if user.is_authenticated %}
-            <a href="{% url 'create_post' %}">Create Post</a>
-            {% endif %}
-        </div>
-    </header>
-    {% block content %}
-    {% endblock  %}
-    <script src="{% static 'js/scripts.js' %}"></script>
+
+<body class="antialiased text-gray-800 min-h-screen flex flex-col">
+    <!-- Skip to main content link for accessibility -->
+    <a href="#main-content"
+        class="sr-only focus:not-sr-only focus:absolute focus:top-0 focus:left-0 focus:z-50 focus:p-4 focus:bg-white focus:text-black">
+        Skip to main content
+    </a>
+
+    <!-- Header -->
+    <!-- <header class="relative z-50 bg-white dark:bg-gray-900"> -->
+    <!-- Header content goes here -->
+    <!-- </header> -->
+
+    <!-- Main content area -->
+    <!-- <main id="main-content" class="flex-1 relative "> -->
+    <!-- Content will be injected here -->
+    <!-- </main> -->
+
+    <!-- {bodyScripts} -->
+
 </body>
+
 </html>
+<element id="6abdb9b0-ad87-43ec-9565-bba46567b6d6" data-section-id="6abdb9b0-ad87-43ec-9565-bba46567b6d6">
+
+    <htmlCode>
+        <!DOCTYPE html>
+        <html lang="en">
+
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <script src="https://cdn.tailwindcss.com"></script>
+            <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+            <style>
+                [x-cloak] {
+                    display: none !important;
+                }
+
+                html {
+                    scroll-behavior: smooth;
+                }
+
+                .active-link {
+                    background-color: #f7fafc;
+                    /* bg-gray-100 */
+                    color: #1a202c;
+                    /* text-gray-900 */
+                }
+
+                .nav-link:hover {
+                    background-color: #f7fafc;
+                    /* bg-gray-100 */
+                    color: #1a202c;
+                    /* text-gray-900 */
+                    transition-property: color, background-color;
+                    transition-duration: 200ms;
+                }
+            </style>
+        </head>
+
+        <body class="bg-[#E5E7EB]" x-data="{ isOpen: false }"
+            @resize.window="if (window.innerWidth > 1024) isOpen = false">
+            <div class="flex" id="root">
+                <div class="relative">
+
+                    <!-- Mobile Menu Button -->
+                    <button type="button"
+                        class="lg:hidden fixed top-4 left-4 z-50 rounded-lg p-2 bg-white text-gray-600 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-200"
+                        @click="isOpen = !isOpen" :aria-expanded="isOpen">
+                        <svg x-show="!isOpen" class="w-9 h-9" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                        <svg x-show="isOpen" x-cloak class="w-9 h-9" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+
+                    <!-- Desktop Menu Button -->
+                    <button type="button"
+                        class="hidden lg:block fixed top-10 left-4 rounded-lg p-2 bg-white text-gray-600 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-200"
+                        @click="isOpen = !isOpen" :aria-expanded="isOpen">
+                        <svg x-show="!isOpen" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                        <svg x-show="isOpen" x-cloak class="w-9 h-9" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+
+
+                    <!-- Navigation -->
+                    <nav class="fixed h-screen w-64 bg-white border-r border-gray-200 z-[9999]" x-show="isOpen"
+                        @click.away="if (window.innerWidth <= 1024) isOpen = false">
+
+                        <div class="p-6">
+                            <div class="flex items-center justify-between mb-8">
+                                <span class="text-2xl font-bold text-gray-800">Novelism</span>
+                                <!-- Mobile close button -->
+                                <button @click="isOpen = false" class="lg:hidden text-gray-600 hover:text-gray-900">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M6 18L18 6M6 6l12 12"></path>
+                                    </svg>
+                                </button>
+                                <!-- Desktop close button -->
+                                <button @click="isOpen = false"
+                                    class="hidden lg:block text-gray-600 hover:text-gray-900">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M6 18L18 6M6 6l12 12"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="space-y-4">
+                            <a href="{% url 'home' %}"
+                                class="nav-link block px-4 py-2 text-gray-600 rounded-lg">Home</a>
+                            <!-- <a href="#posts" class="nav-link block px-4 py-2 text-gray-600 rounded-lg">Posts</a> -->
+                            <a href="{% url 'create_post' %}"
+                                class="nav-link block px-4 py-2 text-gray-600 rounded-lg">Create</a>
+                            <a href="{% url 'collaborators' %}"
+                                class="nav-link block px-4 py-2 text-gray-600 rounded-lg">Collaborators</a>
+                            <a href="{% url 'feedback' %}"
+                                class="nav-link block px-4 py-2 text-gray-600 rounded-lg">Feedback</a>
+                            <a href="{% url 'about' %}"
+                                class="nav-link block px-4 py-2 text-gray-600 rounded-lg">About</a>
+                        </div>
+
+                        <div class="absolute bottom-0 left-0 right-0 p-6" x-show="isOpen"
+                            @click.away="if (window.innerWidth <= 1024) isOpen = false">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-2">
+                                    <span class="text-sm text-gray-600 z-[9999]">
+                                        {% if user.is_authenticated %}
+                                        <!-- <img src="https://avatar.iran.liara.run/public" alt="Profile"
+                                                class="w-8 h-8 rounded-full"> -->
+                                        <span>{{ user.username }}</span>
+                                        <button class="text-gray-600 hover:text-gray-900 ml-40"
+                                            onclick="window.location.href = '{% url 'logout' %}'">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1">
+                                                </path>
+                                            </svg>
+                                        </button>
+                                        {% else %}
+                                        <a class="text-gray-600 hover:text-gray-900 ml-6 mr-6"
+                                            href="{% url 'login' %}">Login</a>
+                                        <a class="text-gray-600 hover:text-gray-900 ml-6 mr-6"
+                                            href="{% url 'register' %}">Register</a>
+                                        {% endif %}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+
+            <main class="flex-1 overflow-y-auto">
+                <div id="MountPoint">
+                    {% block content %}
+
+                    {% endblock %}
+
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function () {
+                            // Active link handling
+                            const navLinks = document.querySelectorAll('.nav-link');
+
+                            function setActiveLink() {
+                                const hash = window.location.hash || '#home';
+                                navLinks.forEach(link => {
+                                    link.classList.remove('active-link');
+                                    if (link.getAttribute('href') === hash) {
+                                        link.classList.add('active-link');
+                                    }
+                                });
+                            }
+
+                            window.addEventListener('hashchange', setActiveLink);
+                            setActiveLink();
+                        });
+                    </script>
+                    </script>
+</element>

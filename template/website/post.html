@@ -1,10 +1,468 @@
 {% extends 'layout.html' %}
+{% load static %}
+{% load widget_tweaks %}
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
 
-{% block content %}
-<h1>Create Post</h1>
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Create Post</button>
-</form>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="theme-color" content="#ffffff">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="robots" content="index, follow">
+
+    <!-- Performance optimization: Preload critical resources -->
+    <link rel="preload" href="https://cdn.tailwindcss.com" as="script">
+    <link rel="preload"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap"
+        as="style">
+
+    <!-- {headerScripts} -->
+
+    <!-- Core CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#f8f8f8',
+                            100: '#e8e8e8',
+                            200: '#d3d3d3',
+                            300: '#a3a3a3',
+                            400: '#737373',
+                            500: '#525252',
+                            600: '#404040',
+                            700: '#262626',
+                            800: '#171717',
+                            900: '#0a0a0a',
+                            950: '#030303',
+                        },
+                        secondary: {
+                            50: '#f8f8f8',
+                            100: '#e8e8e8',
+                            200: '#d3d3d3',
+                            300: '#a3a3a3',
+                            400: '#737373',
+                            500: '#525252',
+                            600: '#404040',
+                            700: '#262626',
+                            800: '#171717',
+                            900: '#0a0a0a',
+                            950: '#030303',
+                        },
+                        accent: {
+                            50: '#f8f8f8',
+                            100: '#e8e8e8',
+                            200: '#d3d3d3',
+                            300: '#a3a3a3',
+                            400: '#737373',
+                            500: '#525252',
+                            600: '#404040',
+                            700: '#262626',
+                            800: '#171717',
+                            900: '#0a0a0a',
+                            950: '#030303',
+                        },
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif'],
+                        heading: ['Montserrat', 'Inter', 'system-ui', 'sans-serif'],
+                    },
+                    spacing: {
+                        '18': '4.5rem',
+                        '22': '5.5rem',
+                        '30': '7.5rem',
+                    },
+                    maxWidth: {
+                        '8xl': '88rem',
+                        '9xl': '96rem',
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-in',
+                        'fade-out': 'fadeOut 0.5s ease-out',
+                        'slide-up': 'slideUp 0.5s ease-out',
+                        'slide-down': 'slideDown 0.5s ease-out',
+                        'slide-left': 'slideLeft 0.5s ease-out',
+                        'slide-right': 'slideRight 0.5s ease-out',
+                        'scale-in': 'scaleIn 0.5s ease-out',
+                        'scale-out': 'scaleOut 0.5s ease-out',
+                        'spin-slow': 'spin 3s linear infinite',
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'bounce-slow': 'bounce 3s infinite',
+                        'float': 'float 3s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        fadeOut: {
+                            '0%': { opacity: '1' },
+                            '100%': { opacity: '0' },
+                        },
+                        slideUp: {
+                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        },
+                        slideDown: {
+                            '0%': { transform: 'translateY(-20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        },
+                        slideLeft: {
+                            '0%': { transform: 'translateX(20px)', opacity: '0' },
+                            '100%': { transform: 'translateX(0)', opacity: '1' },
+                        },
+                        slideRight: {
+                            '0%': { transform: 'translateX(-20px)', opacity: '0' },
+                            '100%': { transform: 'translateX(0)', opacity: '1' },
+                        },
+                        scaleIn: {
+                            '0%': { transform: 'scale(0.9)', opacity: '0' },
+                            '100%': { transform: 'scale(1)', opacity: '1' },
+                        },
+                        scaleOut: {
+                            '0%': { transform: 'scale(1.1)', opacity: '0' },
+                            '100%': { transform: 'scale(1)', opacity: '1' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                    },
+                    aspectRatio: {
+                        'portrait': '3/4',
+                        'landscape': '4/3',
+                        'ultrawide': '21/9',
+                    },
+                },
+            },
+            variants: {
+                extend: {
+                    opacity: ['disabled'],
+                    cursor: ['disabled'],
+                    backgroundColor: ['active', 'disabled'],
+                    textColor: ['active', 'disabled'],
+                },
+            },
+        }
+    </script>
+
+    <!-- Utilities and Components -->
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.13.3/cdn.min.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.45.1/apexcharts.min.js"></script>
+
+    <!-- Optimized Font Loading -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+        integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- Base Styles -->
+    <style>
+        * {
+            -ms-overflow-style: none;
+            /* IE and Edge */
+            scrollbar-width: none;
+            /* Firefox */
+        }
+
+        /* Webkit browsers like Chrome, Safari, newer Edge */
+        *::-webkit-scrollbar {
+            display: none;
+            width: 0;
+            height: 0;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 0px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #666;
+        }
+
+        /* Remove tap highlight on mobile */
+        * {
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Improve text rendering */
+        body {
+            text-rendering: optimizeLegibility;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Focus outline styles */
+        :focus-visible {
+            outline: 2px solid currentColor;
+            outline-offset: 2px;
+        }
+
+        /* Print styles */
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+
+            a[href]:after {
+                content: " (" attr(href) ")";
+            }
+        }
+    </style>
+
+    <!-- Enhanced Image Handler -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const imageObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        if (img.dataset.src) {
+                            const tempImage = new Image();
+                            tempImage.onload = () => {
+                                img.src = img.dataset.src;
+                                img.classList.remove('opacity-0');
+                                img.classList.add('opacity-100');
+                            };
+                            tempImage.src = img.dataset.src;
+                            img.removeAttribute('data-src');
+                            observer.unobserve(img);
+                        }
+                    }
+                });
+            }, {
+                rootMargin: '50px 0px',
+                threshold: 0.01
+            });
+
+            const loadImage = (img) => {
+                if ('loading' in HTMLImageElement.prototype) {
+                    img.loading = 'lazy';
+                }
+
+                img.classList.add('transition-opacity', 'duration-300', 'opacity-0');
+
+                img.onerror = () => {
+                    const width = img.getAttribute('width') || img.clientWidth || 300;
+                    const height = img.getAttribute('height') || img.clientHeight || 200;
+                    img.src = `https://placehold.co/${width}x${height}/DEDEDE/555555?text=Image+Unavailable`;
+                    img.alt = 'Image unavailable';
+                    img.classList.remove('opacity-0');
+                    img.classList.add('opacity-100', 'error-image');
+                };
+
+                if (img.dataset.src) {
+                    imageObserver.observe(img);
+                } else {
+                    img.classList.remove('opacity-0');
+                    img.classList.add('opacity-100');
+                }
+            };
+
+            document.querySelectorAll('img[data-src], img:not([data-src])').forEach(loadImage);
+
+            // Watch for dynamically added images
+            new MutationObserver((mutations) => {
+                mutations.forEach(mutation => {
+                    mutation.addedNodes.forEach(node => {
+                        if (node.nodeType === 1) {
+                            if (node.tagName === 'IMG') {
+                                loadImage(node);
+                            }
+                            node.querySelectorAll('img').forEach(loadImage);
+                        }
+                    });
+                });
+            }).observe(document.body, {
+                childList: true,
+                subtree: true
+            });
+        });
+
+        // Performance monitoring
+        if ('performance' in window && 'PerformanceObserver' in window) {
+            // Create performance observer
+            const observer = new PerformanceObserver((list) => {
+                const entries = list.getEntries();
+                entries.forEach((entry) => {
+                    if (entry.entryType === 'largest-contentful-paint') {
+                        // console.log(`LCP: ${entry.startTime}ms`);
+                    }
+                    if (entry.entryType === 'first-input') {
+                        // console.log(`FID: ${entry.processingStart - entry.startTime}ms`);
+                    }
+                    if (entry.entryType === 'layout-shift') {
+                        // console.log(`CLS: ${entry.value}`);
+                    }
+                });
+            });
+
+            // Observe performance metrics
+            observer.observe({ entryTypes: ['largest-contentful-paint', 'first-input', 'layout-shift'] });
+
+            // Log basic performance metrics
+            window.addEventListener('load', () => {
+                const timing = performance.getEntriesByType('navigation')[0];
+                console.log({
+                    'DNS Lookup': timing.domainLookupEnd - timing.domainLookupStart,
+                    'TCP Connection': timing.connectEnd - timing.connectStart,
+                    'DOM Content Loaded': timing.domContentLoadedEventEnd - timing.navigationStart,
+                    'Page Load': timing.loadEventEnd - timing.navigationStart
+                });
+            });
+        }
+
+        // Handle offline/online status
+        window.addEventListener('online', () => {
+            document.body.classList.remove('offline');
+            console.log('Connection restored');
+        });
+
+        window.addEventListener('offline', () => {
+            document.body.classList.add('offline');
+            console.log('Connection lost');
+        });
+    </script>
+</head>
+
+<body class="antialiased text-gray-800 min-h-screen flex flex-col">
+    <!-- Skip to main content link for accessibility -->
+    <a href="#main-content"
+        class="sr-only focus:not-sr-only focus:absolute focus:top-0 focus:left-0 focus:z-50 focus:p-4 focus:bg-white focus:text-black">
+        Skip to main content
+    </a>
+
+    <!-- Header -->
+    <!-- <header class="relative z-50 bg-white dark:bg-gray-900"> -->
+    <!-- Header content goes here -->
+    <!-- </header> -->
+
+    <!-- Main content area -->
+    <!-- <main id="main-content" class="flex-1 relative "> -->
+    <!-- Content will be injected here -->
+    <!-- </main> -->
+
+    <!-- {bodyScripts} -->
+
+</body>
+
+</html>
+
+{% block title %}Novelism - Create Post{% endblock %}
+
+{% block content%}
+
+<element id="daff1bd8-72a9-4130-accc-ccc5375d029e" data-section-id="daff1bd8-72a9-4130-accc-ccc5375d029e">
+
+    <htmlCode>
+        <section id="post-management" class="px-4 py-8 lg:px-8">
+            <div class="max-w-4xl mx-auto">
+                <div class="max-w-4xl mx-auto">
+                    <!-- Create/Edit Post Form -->
+                    <div class="bg-white rounded-lg border border-gray-300 p-8">
+                        <h2 class="text-2xl font-bold text-gray-800 mb-6">Create New Post</h2>
+
+                        <form method="post" action="{% url 'create_post' %}" enctype="multipart/form-data"
+                            class="space-y-6" onsubmit="return validateForm(event);">
+                            {% csrf_token %}
+                            <!-- Title -->
+                            <div>
+                                <label for="id_title" class="block text-sm font-medium text-gray-700 mb-1">Title</label>
+                                {{ form.title|add_class:"w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-gray-400" }}
+                                {% if form.title.errors %}
+                                <p class="text-red-500 text-xs mt-1">{{ form.title.errors.0 }}</p>
+                                {% endif %}
+                            </div>
+
+                            <!-- Image Upload -->
+                            <div>
+                                <label for="id_image" class="block text-sm font-medium text-gray-700 mb-1">Book
+                                    Cover</label>
+                                <div
+                                    class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-lg">
+                                    <div class="space-y-1 text-center">
+                                        <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none"
+                                            viewBox="0 0 48 48">
+                                            <path
+                                                d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
+                                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                        </svg>
+                                        <div class="flex flex-col items-center text-sm text-gray-600"></div>
+                                            <input type="file" id="id_image" name="{{ form.image.name }}" 
+                                                class="hidden" accept="image/*">
+                                            <button type="button" onclick="document.getElementById('id_image').click()"
+                                                class="px-4 py-2 bg-gray-100 rounded-md hover:bg-gray-200 transition-colors">
+                                                Upload Image
+                                            </button>
+                                            <p class="mt-1">or drag and drop</p>
+                                            {% if form.image.errors %}
+                                            <p class="text-red-500 text-xs mt-1">{{ form.image.errors.0 }}</p>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Content -->
+                            <div onclick="event.stopPropagation();">
+                                <label for="id_content"
+                                    class="block text-sm font-medium text-gray-700 mb-1">Content</label>
+                                {{ form.content|add_class:"w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-gray-400" }}
+                                {% if form.content.errors %}
+                                <p class="text-red-500 text-xs mt-1">{{ form.content.errors.0 }}</p>
+                                {% endif %}
+                            </div>
+
+                            <!-- Tags -->
+                            <div onclick="event.stopPropagation();">
+                                <label for="id_tags" class="block text-sm font-medium text-gray-700 mb-1">Select
+                                    Tags</label>
+                                {{ form.tags|add_class:"w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-gray-400" }}
+                                {% if form.tags.errors %}
+                                <p class="text-red-500 text-xs mt-1">{{ form.tags.errors.0 }}</p>
+                                {% endif %}
+                            </div>
+
+                            <div class="flex justify-end gap-4">
+                                <button type="submit"
+                                class="px-6 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-700 transition-colors">
+                                Create Post
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <script>
+            function validateForm(event) {
+                // Add your form validation logic here
+                return true; // Return false to prevent submission if validation fails
+            }
+        </script>
+    </htmlCode>
+</element>
+
 {% endblock %}

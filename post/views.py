@@ -10,12 +10,15 @@ from django.http import JsonResponse
 @login_required
 def create_post(request):
     if request.method == 'POST':
-        form = PostForm(request.POST, request.FILES)
-        if form.is_valid():
-            post = form.save(commit=False)
-            post.user = request.user
-            post.save()
-            return redirect('post_detail', post_id=post.id)
+        try:
+            form = PostForm(request.POST, request.FILES)
+            if form.is_valid():
+                post = form.save(commit=False)
+                post.user = request.user
+                post.save()
+                return redirect('post_detail', post_id=post.id)
+        except Exception as e:
+            form.add_error(None, f"Error creating post: {str(e)}")
     else:
         form = PostForm()
     return render(request, 'website/post.html', {'form': form})

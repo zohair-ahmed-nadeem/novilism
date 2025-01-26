@@ -70,3 +70,6 @@ def delete_post_view(request, post_id):
     if post.user == request.user:
         post.delete()
     return redirect('home')
+
+def about(request):
+    return render(request, 'website/about.html')

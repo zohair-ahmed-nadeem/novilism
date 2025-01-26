@@ -1,121 +1,583 @@
 {% extends 'layout.html' %}
+{% load static  %}
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="Novilism">
+    <meta name="theme-color" content="#ffffff">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="robots" content="index, follow">
+
+    <!-- Performance optimization: Preload critical resources -->
+    <link rel="preload" href="https://cdn.tailwindcss.com" as="script">
+    <link rel="preload"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap"
+        as="style">
+
+    <!-- {headerScripts} -->
+
+    <!-- Core CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#f8f8f8',
+                            100: '#e8e8e8',
+                            200: '#d3d3d3',
+                            300: '#a3a3a3',
+                            400: '#737373',
+                            500: '#525252',
+                            600: '#404040',
+                            700: '#262626',
+                            800: '#171717',
+                            900: '#0a0a0a',
+                            950: '#030303',
+                        },
+                        secondary: {
+                            50: '#f8f8f8',
+                            100: '#e8e8e8',
+                            200: '#d3d3d3',
+                            300: '#a3a3a3',
+                            400: '#737373',
+                            500: '#525252',
+                            600: '#404040',
+                            700: '#262626',
+                            800: '#171717',
+                            900: '#0a0a0a',
+                            950: '#030303',
+                        },
+                        accent: {
+                            50: '#f8f8f8',
+                            100: '#e8e8e8',
+                            200: '#d3d3d3',
+                            300: '#a3a3a3',
+                            400: '#737373',
+                            500: '#525252',
+                            600: '#404040',
+                            700: '#262626',
+                            800: '#171717',
+                            900: '#0a0a0a',
+                            950: '#030303',
+                        },
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif'],
+                        heading: ['Montserrat', 'Inter', 'system-ui', 'sans-serif'],
+                    },
+                    spacing: {
+                        '18': '4.5rem',
+                        '22': '5.5rem',
+                        '30': '7.5rem',
+                    },
+                    maxWidth: {
+                        '8xl': '88rem',
+                        '9xl': '96rem',
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-in',
+                        'fade-out': 'fadeOut 0.5s ease-out',
+                        'slide-up': 'slideUp 0.5s ease-out',
+                        'slide-down': 'slideDown 0.5s ease-out',
+                        'slide-left': 'slideLeft 0.5s ease-out',
+                        'slide-right': 'slideRight 0.5s ease-out',
+                        'scale-in': 'scaleIn 0.5s ease-out',
+                        'scale-out': 'scaleOut 0.5s ease-out',
+                        'spin-slow': 'spin 3s linear infinite',
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'bounce-slow': 'bounce 3s infinite',
+                        'float': 'float 3s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        fadeOut: {
+                            '0%': { opacity: '1' },
+                            '100%': { opacity: '0' },
+                        },
+                        slideUp: {
+                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        },
+                        slideDown: {
+                            '0%': { transform: 'translateY(-20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        },
+                        slideLeft: {
+                            '0%': { transform: 'translateX(20px)', opacity: '0' },
+                            '100%': { transform: 'translateX(0)', opacity: '1' },
+                        },
+                        slideRight: {
+                            '0%': { transform: 'translateX(-20px)', opacity: '0' },
+                            '100%': { transform: 'translateX(0)', opacity: '1' },
+                        },
+                        scaleIn: {
+                            '0%': { transform: 'scale(0.9)', opacity: '0' },
+                            '100%': { transform: 'scale(1)', opacity: '1' },
+                        },
+                        scaleOut: {
+                            '0%': { transform: 'scale(1.1)', opacity: '0' },
+                            '100%': { transform: 'scale(1)', opacity: '1' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                    },
+                    aspectRatio: {
+                        'portrait': '3/4',
+                        'landscape': '4/3',
+                        'ultrawide': '21/9',
+                    },
+                },
+            },
+            variants: {
+                extend: {
+                    opacity: ['disabled'],
+                    cursor: ['disabled'],
+                    backgroundColor: ['active', 'disabled'],
+                    textColor: ['active', 'disabled'],
+                },
+            },
+        }
+    </script>
+
+    <!-- Utilities and Components -->
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.13.3/cdn.min.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.45.1/apexcharts.min.js"></script>
+
+    <!-- Optimized Font Loading -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+        integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- Base Styles -->
+    <style>
+        * {
+            -ms-overflow-style: none;
+            /* IE and Edge */
+            scrollbar-width: none;
+            /* Firefox */
+        }
+
+        /* Webkit browsers like Chrome, Safari, newer Edge */
+        *::-webkit-scrollbar {
+            display: none;
+            width: 0;
+            height: 0;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 0px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #666;
+        }
+
+        /* Remove tap highlight on mobile */
+        * {
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Improve text rendering */
+        body {
+            text-rendering: optimizeLegibility;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Focus outline styles */
+        :focus-visible {
+            outline: 2px solid currentColor;
+            outline-offset: 2px;
+        }
+
+        /* Print styles */
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+
+            a[href]:after {
+                content: " (" attr(href) ")";
+            }
+        }
+    </style>
+
+    <!-- Enhanced Image Handler -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const imageObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        if (img.dataset.src) {
+                            const tempImage = new Image();
+                            tempImage.onload = () => {
+                                img.src = img.dataset.src;
+                                img.classList.remove('opacity-0');
+                                img.classList.add('opacity-100');
+                            };
+                            tempImage.src = img.dataset.src;
+                            img.removeAttribute('data-src');
+                            observer.unobserve(img);
+                        }
+                    }
+                });
+            }, {
+                rootMargin: '50px 0px',
+                threshold: 0.01
+            });
+
+            const loadImage = (img) => {
+                if ('loading' in HTMLImageElement.prototype) {
+                    img.loading = 'lazy';
+                }
+
+                img.classList.add('transition-opacity', 'duration-300', 'opacity-0');
+
+                img.onerror = () => {
+                    const width = img.getAttribute('width') || img.clientWidth || 300;
+                    const height = img.getAttribute('height') || img.clientHeight || 200;
+                    img.src = `https://placehold.co/${width}x${height}/DEDEDE/555555?text=Image+Unavailable`;
+                    img.alt = 'Image unavailable';
+                    img.classList.remove('opacity-0');
+                    img.classList.add('opacity-100', 'error-image');
+                };
+
+                if (img.dataset.src) {
+                    imageObserver.observe(img);
+                } else {
+                    img.classList.remove('opacity-0');
+                    img.classList.add('opacity-100');
+                }
+            };
+
+            document.querySelectorAll('img[data-src], img:not([data-src])').forEach(loadImage);
+
+            // Watch for dynamically added images
+            new MutationObserver((mutations) => {
+                mutations.forEach(mutation => {
+                    mutation.addedNodes.forEach(node => {
+                        if (node.nodeType === 1) {
+                            if (node.tagName === 'IMG') {
+                                loadImage(node);
+                            }
+                            node.querySelectorAll('img').forEach(loadImage);
+                        }
+                    });
+                });
+            }).observe(document.body, {
+                childList: true,
+                subtree: true
+            });
+        });
+
+        // Performance monitoring
+        if ('performance' in window && 'PerformanceObserver' in window) {
+            // Create performance observer
+            const observer = new PerformanceObserver((list) => {
+                const entries = list.getEntries();
+                entries.forEach((entry) => {
+                    if (entry.entryType === 'largest-contentful-paint') {
+                        // console.log(`LCP: ${entry.startTime}ms`);
+                    }
+                    if (entry.entryType === 'first-input') {
+                        // console.log(`FID: ${entry.processingStart - entry.startTime}ms`);
+                    }
+                    if (entry.entryType === 'layout-shift') {
+                        // console.log(`CLS: ${entry.value}`);
+                    }
+                });
+            });
+
+            // Observe performance metrics
+            observer.observe({ entryTypes: ['largest-contentful-paint', 'first-input', 'layout-shift'] });
+
+            // Log basic performance metrics
+            window.addEventListener('load', () => {
+                const timing = performance.getEntriesByType('navigation')[0];
+                console.log({
+                    'DNS Lookup': timing.domainLookupEnd - timing.domainLookupStart,
+                    'TCP Connection': timing.connectEnd - timing.connectStart,
+                    'DOM Content Loaded': timing.domContentLoadedEventEnd - timing.navigationStart,
+                    'Page Load': timing.loadEventEnd - timing.navigationStart
+                });
+            });
+        }
+
+        // Handle offline/online status
+        window.addEventListener('online', () => {
+            document.body.classList.remove('offline');
+            console.log('Connection restored');
+        });
+
+        window.addEventListener('offline', () => {
+            document.body.classList.add('offline');
+            console.log('Connection lost');
+        });
+    </script>
+</head>
+
+<body class="antialiased text-gray-800 min-h-screen flex flex-col">
+    <!-- Skip to main content link for accessibility -->
+    <a href="#main-content"
+        class="sr-only focus:not-sr-only focus:absolute focus:top-0 focus:left-0 focus:z-50 focus:p-4 focus:bg-white focus:text-black">
+        Skip to main content
+    </a>
+
+    <!-- Header -->
+    <header class="relative z-50 bg-white dark:bg-gray-900">
+        <!-- Header content goes here -->
+    </header>
+
+    <!-- {bodyScripts} -->
+
+</body>
+
+{% block title %}Novelism - Pakiatan First book post platform upload your books here {% endblock  %}
 
 {% block content %}
-<h1>All Posts</h1>
 
-<!-- Search bar -->
-<div style="position: relative;">
-    <input type="text" id="search-bar" placeholder="Search posts..." onkeyup="searchPosts()" style="width: 100%; padding: 10px; box-sizing: border-box;">
-    <div id="search-results" style="border: 1px solid #ccc; display: none; position: absolute; background: white; z-index: 1000; width: 100%;">
-        <!-- Search results will be appended here -->
-    </div>
-</div>
+<element id="ade17538-475f-42bd-8e94-6a18aa43bd1c" data-section-id="ade17538-475f-42bd-8e94-6a18aa43bd1c">
 
-<!-- Filter form -->
-<form method="get" action="{% url 'home' %}">
-    <label for="tag">Filter by tag:</label>
-    <select name="tag" id="tag">
-        <option value="">All</option>
-        <option value="F" {% if tag == "F" %}selected{% endif %}>Fiction</option>
-        <option value="N" {% if tag == "N" %}selected{% endif %}>Non-Fiction</option>
-        <option value="P" {% if tag == "P" %}selected{% endif %}>Poetry</option>
-        <option value="R" {% if tag == "R" %}selected{% endif %}>Romantic</option>
-        <option value="H" {% if tag == "H" %}selected{% endif %}>Horror</option>
-        <option value="S" {% if tag == "S" %}selected{% endif %}>Science Fiction</option>
-        <option value="M" {% if tag == "M" %}selected{% endif %}>Mystery</option>
-        <option value="C" {% if tag == "C" %}selected{% endif %}>Comedy</option>
-        <option value="D" {% if tag == "D" %}selected{% endif %}>Drama</option>
-        <option value="A" {% if tag == "A" %}selected{% endif %}>Action</option>
-        <option value="T" {% if tag == "T" %}selected{% endif %}>Thriller</option>
-        <option value="G" {% if tag == "G" %}selected{% endif %}>General</option>
-    </select>
-    <button type="submit">Filter</button>
-</form>
+    <htmlCode>
+        <section id="home" class="px-4 py-6 lg:px-8">
+            <!-- Top Navigation Bar -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 mb-8 p-4">
+                <div class="flex flex-col lg:flex-row items-center justify-between gap-4 ml-6">
+                    <div class="text-2xl font-bold text-gray-800">
+                        Novelism
+                    </div>
 
-<!-- Top 5 Most Viewed Posts -->
-<h2>Top 5 Most Viewed Posts</h2>
-<div>
-    {% for post in top_viewed_posts %}
-        <div>
-            <h3>{{ post.title }}</h3>
-            <p>Views: {{ post.view_count }}</p>
-            <a href="{% url 'post_detail' post.id %}">Read More</a>
-        </div>
-    {% endfor %}
-</div>
+                    <div class="flex-1 max-w-2xl w-full">
+                        <div class="flex gap-2">
+                            <div class="relative w-full">
+                                <div class="flex items-center">
+                                    <input type="search" 
+                                        id="search-bar" 
+                                        placeholder="Search books..." 
+                                        onkeyup="searchPosts()"
+                                        class="w-full px-4 py-2 border border-gray-200 rounded-lg bg-white 
+                                               focus:outline-none focus:ring-2 focus:ring-gray-300 focus:border-transparent
+                                               transition duration-200 ease-in-out"
+                                    >
+                                    <button class="lg:hidden ml-2 p-2 bg-gray-100 rounded-lg">
+                                        <i class="fas fa-search text-gray-600"></i>
+                                    </button>
+                                </div>
+                                <div id="search-results" 
+                                    class="absolute w-full top-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg 
+                                           divide-y divide-gray-100 hidden z-50 max-h-96 overflow-y-auto
+                                           scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
+                                </div>
+                            </div>
+                            <form method="get" action="{% url 'home' %}" class="flex gap-2">
+                                <select name="tag" id="tag" class="hidden lg:block px-4 py-2 border border-gray-200 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-gray-300 focus:border-transparent transition duration-200 ease-in-out">
+                                    <option value="">All</option>
+                                    <option value="F" {% if tag == "F" %}selected{% endif %}>Fiction</option>
+                                    <option value="N" {% if tag == "N" %}selected{% endif %}>Non-Fiction</option>
+                                    <option value="P" {% if tag == "P" %}selected{% endif %}>Poetry</option>
+                                    <option value="R" {% if tag == "R" %}selected{% endif %}>Romantic</option>
+                                    <option value="H" {% if tag == "H" %}selected{% endif %}>Horror</option>
+                                    <option value="S" {% if tag == "S" %}selected{% endif %}>Science Fiction</option>
+                                    <option value="M" {% if tag == "M" %}selected{% endif %}>Mystery</option>
+                                    <option value="C" {% if tag == "C" %}selected{% endif %}>Comedy</option>
+                                    <option value="D" {% if tag == "D" %}selected{% endif %}>Drama</option>
+                                    <option value="A" {% if tag == "A" %}selected{% endif %}>Action</option>
+                                    <option value="T" {% if tag == "T" %}selected{% endif %}>Thriller</option>
+                                    <option value="G" {% if tag == "G" %}selected{% endif %}>General</option>
+                                </select>
+                                <button type="submit" class="lg:hidden px-3 py-2 bg-gray-100 rounded-lg">
+                                    <i class="fas fa-filter text-gray-600"></i>
+                                </button>
+                                <button type="submit" class="hidden lg:block px-4 py-2 bg-gray-800 hover:bg-gray-700 text-white rounded-lg transition-colors">Filter</button>
+                            </form>
+                        </div>
+                    </div>
 
-<!-- Top 5 Most Liked Posts -->
-<h2>Top 5 Most Liked Posts</h2>
-<div>
-    {% for post in top_liked_posts %}
-        <div>
-            <h3>{{ post.title }}</h3>
-            <p>Likes: {{ post.likes.count }}</p>
-            <a href="{% url 'post_detail' post.id %}">Read More</a>
-        </div>
-    {% endfor %}
-</div>
+                    <div class="flex gap-3">
+                        {% if user.is_authenticated %}
+                            <a href="#" class="lg:hidden px-3 py-2 bg-gray-100 rounded-lg">
+                                <i class="fas fa-user text-gray-600"></i>
+                            </a>
+                            <p class="hidden lg:block px-6 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors">{{ user.username }}</p>
+                        {% else %}
+                            <a href="{% url 'login' %}" class="lg:hidden px-3 py-2 bg-gray-100 rounded-lg">
+                                <i class="fas fa-sign-in-alt text-gray-600"></i>
+                            </a>
+                            <a href="{% url 'login' %}" class="hidden lg:block px-6 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors">Login</a>
+                            <a href="{% url 'register' %}" class="hidden lg:block px-6 py-2 bg-gray-800 hover:bg-gray-700 text-white rounded-lg transition-colors">Register</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <!-- Mobile Filter Dialog -->
+            <div id="filterDialog" class="hidden fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+                <div class="flex items-center justify-center min-h-screen p-4">
+                    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+                    <div class="relative bg-white rounded-lg w-full max-w-sm">
+                        <div class="p-4">
+                            <div class="flex justify-between items-center mb-4">
+                                <h3 class="text-lg font-medium">Filter Books</h3>
+                                <button onclick="closeFilterDialog()" class="text-gray-400 hover:text-gray-500">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                            <form method="get" action="{% url 'home' %}" class="space-y-4">
+                                <select name="tag" class="w-full px-4 py-2 border border-gray-200 rounded-lg">
+                                    <option value="">All Categories</option>
+                                    <option value="F">Fiction</option>
+                                    <option value="N">Non-Fiction</option>
+                                    <option value="P">Poetry</option>
+                                    <option value="R">Romantic</option>
+                                    <option value="H">Horror</option>
+                                    <option value="S">Science Fiction</option>
+                                    <option value="M">Mystery</option>
+                                    <option value="C">Comedy</option>
+                                    <option value="D">Drama</option>
+                                    <option value="A">Action</option>
+                                    <option value="T">Thriller</option>
+                                    <option value="G">General</option>
+                                </select>
+                                <button type="submit" class="w-full px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-700">
+                                    Apply Filter
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-<!-- Collaborators -->
-<h2>Collaborators</h2>
-<div>
-    {% for collaborator in collaborators %}
-        <div>
-            <a href="{{ collaborator.profile_link }}" target="_blank">
-                <img src="{{ collaborator.profile_picture.url }}" alt="{{ collaborator.name }}" style="max-width: 100px; height: auto;">
-            </a>
-            <p>{{ collaborator.name }}</p>
-        </div>
-    {% endfor %}
-</div>
+            <script>
+            function showFilterDialog() {
+                document.getElementById('filterDialog').classList.remove('hidden');
+            }
 
-<!-- Recent Posts -->
-<h2>Recent Posts</h2>
-<div>
-    {% for post in recent_posts %}
-        <div>
-            <h3>{{ post.title }}</h3>
-            <p>Posted on: {{ post.post_date|date:"F j, Y, g:i a" }}</p>
-            <a href="{% url 'post_detail' post.id %}">Read More</a>
-        </div>
-    {% endfor %}
-</div>
+            function closeFilterDialog() {
+                document.getElementById('filterDialog').classList.add('hidden');
+            }
 
-<!-- Random Posts -->
-<h2>Random Posts</h2>
-<div>
-    {% for post in random_posts %}
-        <div>
-            <h3>{{ post.title }}</h3>
-            <a href="{% url 'post_detail' post.id %}">Read More</a>
-        </div>
-    {% endfor %}
-</div>
+            // Update mobile filter button to show dialog
+            document.querySelector('button[type="submit"].lg\\:hidden').onclick = function(e) {
+                e.preventDefault();
+                showFilterDialog();
+            };
+            </script>
+            <!-- Trending Books Section -->
+            <div class="mb-12">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6">Top 5 Trending Books</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+                    <!-- Book Cards -->
+                    {% for post in top_liked_posts %}
+                        <a href="{% url 'post_detail' post.id %}" class="block bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-lg transition duration-300">
+                            <img src="{{ post.image.url }}" alt="Cover for{{ post.title }}"
+                            class="w-full h-48 object-cover">
+                            <div class="p-4">
+                                <h3 class="font-bold mb-2">{{ post.title }}</h3>
+                                <p class="text-sm text-gray-600 mb-2">By: {{ post.user.username }}</p>
+                                <div class="text-sm text-gray-500">Views: {{ post.view_count }}</div>
+                            </div>
+                        </a>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="mb-12">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6"> Recent Books</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+                    <!-- Book Cards -->
+                    {% for post in recent_posts %}
+                        <a href="{% url 'post_detail' post.id %}" class="block bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-lg transition duration-300">
+                            <img src="{{ post.image.url }}" alt="Cover for{{ post.title }}"
+                            class="w-full h-48 object-cover">
+                            <div class="p-4">
+                                <h3 class="font-bold mb-2">{{ post.title }}</h3>
+                                <p class="text-sm text-gray-600 mb-2">By: {{ post.user.username }}</p>
+                                <div class="text-sm text-gray-500">Views: {{ post.view_count }}</div>
+                                <div class="text-sm text-gray-500">Posted on: {{ post.post_date|date:"F j, Y" }}</div>
+                            </div>
+                        </a>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {% for collaborator in collaborators %}
+                <div class="group">
+                    <div
+                        class="bg-white rounded-lg border border-gray-200 p-6 transition-transform duration-300 hover:-translate-y-2">
+                        <a href="{{ collaborator.profile_link }}" class="block text-center">
+                            <img src="{{ collaborator.profile_picture.url }}" alt="{{ collaborator.name }}"
+                                class="w-32 h-32 rounded-full mx-auto mb-4 transition-transform duration-300 group-hover:scale-105">
+                            <h3 class="text-xl font-bold mb-2">{{ collaborator.name }}</h3>
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
 
-<script>
-function searchPosts() {
-    const query = document.getElementById('search-bar').value;
-    if (query.length > 0) {
-        fetch(`/search/?q=${query}`)
-            .then(response => response.json())
-            .then(data => {
-                const searchResults = document.getElementById('search-results');
-                searchResults.innerHTML = '';
-                if (data.length > 0) {
-                    data.forEach(post => {
-                        const postElement = document.createElement('div');
-                        postElement.innerHTML = `<a href="/post/${post.id}/" style="display: block; padding: 10px; text-decoration: none; color: black;">${post.title}</a>`;
-                        searchResults.appendChild(postElement);
-                    });
-                    searchResults.style.display = 'block';
+
+            <!-- Footer Links -->
+            <footer class="mt-12 py-6 border-t border-gray-200">
+                <div class="flex flex-wrap justify-center gap-6 text-gray-600">
+                    <a href="{% url 'about' %}" class="hover:text-gray-900">About Developer</a>
+                    <a href="{% url 'feedback' %}" class="hover:text-gray-900">Feedback</a>
+                    <a href="{% url 'collaborators' %}" class="hover:text-gray-900">Collaborators</a>
+                </div>
+            </footer>
+        </section>
+        <script>
+            function searchPosts() {
+                const query = document.getElementById('search-bar').value;
+                if (query.length > 0) {
+                    fetch(`/search/?q=${query}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            const searchResults = document.getElementById('search-results');
+                            searchResults.innerHTML = '';
+                            if (data.length > 0) {
+                                data.forEach(post => {
+                                    const postElement = document.createElement('div');
+                                    postElement.innerHTML = `<a href="/post/${post.id}/" style="display: block; padding: 10px; text-decoration: none; color: black;">${post.title}</a>`;
+                                    searchResults.appendChild(postElement);
+                                });
+                                searchResults.style.display = 'block';
+                            } else {
+                                searchResults.style.display = 'none';
+                            }
+                        });
                 } else {
-                    searchResults.style.display = 'none';
+                    document.getElementById('search-results').style.display = 'none';
                 }
-            });
-    } else {
-        document.getElementById('search-results').style.display = 'none';
-    }
-}
-</script>
+            }
+            </script>
 
-{% endblock %}
+    </htmlCode>
+</element>
+{% endblock  %}
