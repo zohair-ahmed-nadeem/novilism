@@ -17,6 +17,8 @@ urlpatterns = [
     path('collaborators/', post_views.collaborators_view, name='collaborators'),
     path('search/', post_views.search_posts, name='search_posts'),
     path('about/', views.about, name='about'),
+    path('get_notifications/', views.get_notifications, name='get_notifications'),
+    path('mark_as_read/<int:id>/', views.mark_as_read, name='mark_as_read'),
 ]
 
 if settings.DEBUG:

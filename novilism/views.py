@@ -1,10 +1,14 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login as auth_login, logout
 from .forms import CustomLoginForm, CustomRegisterForm
-from post.models import Profile , Post
+from post.models import Profile , Post, Notification
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from post.forms import PostForm
+from django.http import JsonResponse
+from post.models import Notification
+from django.http import HttpResponse
+from django.urls import reverse
 
 def login_view(request):
     if request.method == 'POST':
@@ -73,3 +77,24 @@ def delete_post_view(request, post_id):
 
 def about(request):
     return render(request, 'website/about.html')
+
+def get_notifications(request):
+    notifications = Notification.objects.filter(user=request.user).order_by('-created_at')
+    data = [{
+        'id': n.id,
+        'post_title': n.post.title,
+        'comment_content': n.comment.content,
+        'is_read': n.is_read,
+        'comment_author': n.comment.user.username,  # Assuming the comment has a user field
+        'post_url': n.post.get_absolute_url()  # Assuming your Post model has a method to get the URL
+    } for n in notifications]
+    return JsonResponse(data, safe=False)
+
+    return JsonResponse(data, safe=False)
+
+def mark_as_read(request, id):
+    notification = Notification.objects.get(id=id)
+    notification.is_read = True
+    notification.save()
+    return HttpResponse(status=204)
+

@@ -1,5 +1,5 @@
 {% extends 'layout.html' %}
-{% load static  %}
+{% load static %}
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 
@@ -362,7 +362,7 @@
 
 </body>
 
-{% block title %}Novelism - Pakiatan First book post platform upload your books here {% endblock  %}
+{% block title %}Novelism - Pakiatan First book post platform upload your books here {% endblock %}
 
 {% block content %}
 
@@ -381,26 +381,22 @@
                         <div class="flex gap-2">
                             <div class="relative w-full">
                                 <div class="flex items-center">
-                                    <input type="search" 
-                                        id="search-bar" 
-                                        placeholder="Search books..." 
-                                        onkeyup="searchPosts()"
-                                        class="w-full px-4 py-2 border border-gray-200 rounded-lg bg-white 
+                                    <input type="search" id="search-bar" placeholder="Search books..."
+                                        onkeyup="searchPosts()" class="w-full px-4 py-2 border border-gray-200 rounded-lg bg-white 
                                                focus:outline-none focus:ring-2 focus:ring-gray-300 focus:border-transparent
-                                               transition duration-200 ease-in-out"
-                                    >
+                                               transition duration-200 ease-in-out">
                                     <button class="lg:hidden ml-2 p-2 bg-gray-100 rounded-lg">
                                         <i class="fas fa-search text-gray-600"></i>
                                     </button>
                                 </div>
-                                <div id="search-results" 
-                                    class="absolute w-full top-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg 
+                                <div id="search-results" class="absolute w-full top-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg 
                                            divide-y divide-gray-100 hidden z-50 max-h-96 overflow-y-auto
                                            scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
                                 </div>
                             </div>
                             <form method="get" action="{% url 'home' %}" class="flex gap-2">
-                                <select name="tag" id="tag" class="hidden lg:block px-4 py-2 border border-gray-200 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-gray-300 focus:border-transparent transition duration-200 ease-in-out">
+                                <select name="tag" id="tag"
+                                    class="hidden lg:block px-4 py-2 border border-gray-200 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-gray-300 focus:border-transparent transition duration-200 ease-in-out">
                                     <option value="">All</option>
                                     <option value="F" {% if tag == "F" %}selected{% endif %}>Fiction</option>
                                     <option value="N" {% if tag == "N" %}selected{% endif %}>Non-Fiction</option>
@@ -415,32 +411,128 @@
                                     <option value="T" {% if tag == "T" %}selected{% endif %}>Thriller</option>
                                     <option value="G" {% if tag == "G" %}selected{% endif %}>General</option>
                                 </select>
-                                <button type="submit" class="lg:hidden px-3 py-2 bg-gray-100 rounded-lg">
-                                    <i class="fas fa-filter text-gray-600"></i>
-                                </button>
-                                <button type="submit" class="hidden lg:block px-4 py-2 bg-gray-800 hover:bg-gray-700 text-white rounded-lg transition-colors">Filter</button>
+
+                                <button type="submit"
+                                    class="hidden lg:block px-4 py-2 bg-gray-800 hover:bg-gray-700 text-white rounded-lg transition-colors">Filter</button>
+
                             </form>
                         </div>
                     </div>
 
                     <div class="flex gap-3">
                         {% if user.is_authenticated %}
-                            <a href="#" class="lg:hidden px-3 py-2 bg-gray-100 rounded-lg">
-                                <i class="fas fa-user text-gray-600"></i>
-                            </a>
-                            <p class="hidden lg:block px-6 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors">{{ user.username }}</p>
+                        <a href="#" class="lg:hidden px-3 py-2 bg-gray-100 rounded-lg">
+                            <i class="fas fa-user text-gray-600"></i>
+                        </a>
+                        <p
+                            class="hidden lg:block px-6 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors">
+                            {{ user.username }}</p>
+                        <button class="relative px-3 py-2 bg-gray-100 rounded-lg" onclick="toggleNotifications()">
+                            <i class="fas fa-bell text-gray-600"></i>
+                            <span id="notificationCount"
+                                class="absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">0</span>
+                        </button>
+
+                        <div id="notificationPopup"
+                            class="hidden absolute right-0 mt-2 w-80 bg-white border border-gray-300 shadow-lg rounded-lg overflow-hidden z-50 mr-4">
+                            <div class="p-4 border-b">
+                                <div class="p-4 border-b flex justify-between items-center">
+                                    <h3 class="text-lg font-semibold text-gray-700">Notifications</h3>
+                                    <svg onclick="toggleNotifications()" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 cursor-pointer text-gray-500 hover:text-gray-700 transition-all">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                </div>
+                            </div>
+                            <div id="notificationList" class="max-h-60 overflow-y-auto">
+                                <p class="p-4 text-gray-500 text-center">No new notifications</p>
+                            </div>
+                        </div>
+
                         {% else %}
-                            <a href="{% url 'login' %}" class="lg:hidden px-3 py-2 bg-gray-100 rounded-lg">
-                                <i class="fas fa-sign-in-alt text-gray-600"></i>
-                            </a>
-                            <a href="{% url 'login' %}" class="hidden lg:block px-6 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors">Login</a>
-                            <a href="{% url 'register' %}" class="hidden lg:block px-6 py-2 bg-gray-800 hover:bg-gray-700 text-white rounded-lg transition-colors">Register</a>
+                        <a href="{% url 'login' %}" class="lg:hidden px-3 py-2 bg-gray-100 rounded-lg">
+                            <i class="fas fa-sign-in-alt text-gray-600"></i>
+                        </a>
+                        <a href="{% url 'login' %}"
+                            class="hidden lg:block px-6 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors">Login</a>
+                        <a href="{% url 'register' %}"
+                            class="hidden lg:block px-6 py-2 bg-gray-800 hover:bg-gray-700 text-white rounded-lg transition-colors">Register</a>
                         {% endif %}
                     </div>
                 </div>
             </div>
+            <script>
+                function toggleNotifications() {
+                    let popup = document.getElementById('notificationPopup');
+                    popup.classList.toggle('hidden');
+
+                    // Fetch notifications when opening popup
+                    if (!popup.classList.contains('hidden')) {
+                        fetchNotifications();
+                    }
+                    
+                }
+
+                function fetchNotifications() {
+                    fetch("{% url 'get_notifications' %}", { 
+                        method: 'GET',
+                        headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        let notificationList = document.getElementById('notificationList');
+                        notificationList.innerHTML = '';
+
+                        if (data.length === 0) {
+                            notificationList.innerHTML = '<p class="p-4 text-gray-500 text-center">No new notifications</p>';
+                        } else {
+                            data.forEach(notification => {
+                                let notificationItem = `
+                                    <div class="p-4 border-b flex justify-between items-start gap-4 ${notification.is_read ? 'bg-gray-100' : 'bg-blue-100'} rounded-lg shadow-md">
+                                        <div class="flex items-center gap-3">
+                                            <div>
+                                                <p class="text-gray-800 font-semibold">
+                                                    <strong>${notification.comment_author}</strong> commented on 
+                                                    <a href="${notification.post_url}" class="text-blue-600 hover:underline">${notification.post_title}</a>:
+                                                </p>
+                                                <p class="text-gray-600 mt-1 text-sm">${notification.comment_content}</p>
+                                            </div>
+                                        </div>
+                                        ${!notification.is_read ? `
+                                            <button onclick="markAsRead(${notification.id}, this)" 
+                                                class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg text-sm font-medium transition-all duration-300">
+                                                Mark as read
+                                            </button>` : ''}
+                                    </div>`;
+                                notificationList.innerHTML += notificationItem;
+                            });
+                        }
+
+                        // Update notification count badge
+                        const unreadCount = data.filter(n => !n.is_read).length;
+                        notificationCount.textContent = unreadCount > 0 ? unreadCount : '';
+                    })
+                    .catch(error => console.error('Error fetching notifications:', error));
+                }
+                
+
+                function markAsRead(id, element) {
+                    fetch(`/mark_as_read/${id}/`, {
+                        method: 'POST',
+                        headers: { 'X-CSRFToken': '{{ csrf_token }}' },
+                    }).then(() => {
+                        element.parentElement.classList.add('bg-gray-100');
+                        element.remove();
+                        fetchNotifications(); // Refresh the list
+                    });
+                }
+
+                // Initial notification count load
+                document.addEventListener('DOMContentLoaded', fetchNotifications);
+            </script>
+
             <!-- Mobile Filter Dialog -->
-            <div id="filterDialog" class="hidden fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+            <div id="filterDialog" class="hidden fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title"
+                role="dialog" aria-modal="true">
                 <div class="flex items-center justify-center min-h-screen p-4">
                     <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
                     <div class="relative bg-white rounded-lg w-full max-w-sm">
@@ -467,7 +559,8 @@
                                     <option value="T">Thriller</option>
                                     <option value="G">General</option>
                                 </select>
-                                <button type="submit" class="w-full px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-700">
+                                <button type="submit"
+                                    class="w-full px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-700">
                                     Apply Filter
                                 </button>
                             </form>
@@ -477,19 +570,19 @@
             </div>
 
             <script>
-            function showFilterDialog() {
-                document.getElementById('filterDialog').classList.remove('hidden');
-            }
+                function showFilterDialog() {
+                    document.getElementById('filterDialog').classList.remove('hidden');
+                }
 
-            function closeFilterDialog() {
-                document.getElementById('filterDialog').classList.add('hidden');
-            }
+                function closeFilterDialog() {
+                    document.getElementById('filterDialog').classList.add('hidden');
+                }
 
-            // Update mobile filter button to show dialog
-            document.querySelector('button[type="submit"].lg\\:hidden').onclick = function(e) {
-                e.preventDefault();
-                showFilterDialog();
-            };
+                // Update mobile filter button to show dialog
+                document.querySelector('button[type="submit"].lg\\:hidden').onclick = function (e) {
+                    e.preventDefault();
+                    showFilterDialog();
+                };
             </script>
             <!-- Trending Books Section -->
             <div class="mb-12">
@@ -497,33 +590,37 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
                     <!-- Book Cards -->
                     {% for post in top_liked_posts %}
-                        <a href="{% url 'post_detail' post.id %}" class="block bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-lg transition duration-300">
-                            <img src="{{ post.image.url }}" alt="Cover for{{ post.title }}"
+                    <a href="{% url 'post_detail' post.id %}"
+                        class="block bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-lg transition duration-300">
+                        <img src="{{ post.image.url }}" alt="Cover for{{ post.title }}"
                             class="w-full h-48 object-cover">
-                            <div class="p-4">
-                                <h3 class="font-bold mb-2">{{ post.title }}</h3>
-                                <p class="text-sm text-gray-600 mb-2">By: {{ post.user.username }}</p>
-                                <div class="text-sm text-gray-500">Views: {{ post.view_count }}</div>
-                            </div>
-                        </a>
+                        <div class="p-4">
+                            <h3 class="font-bold mb-2">{{ post.title }}</h3>
+                            <p class="text-sm text-gray-600 mb-2">By: {{ post.user.username }}</p>
+                            <div class="text-sm text-gray-500">Views: {{ post.view_count }}</div>
+                        </div>
+                    </a>
                     {% endfor %}
                 </div>
             </div>
+
+
             <div class="mb-12">
                 <h2 class="text-2xl font-bold text-gray-800 mb-6"> Recent Books</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
                     <!-- Book Cards -->
                     {% for post in recent_posts %}
-                        <a href="{% url 'post_detail' post.id %}" class="block bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-lg transition duration-300">
-                            <img src="{{ post.image.url }}" alt="Cover for{{ post.title }}"
+                    <a href="{% url 'post_detail' post.id %}"
+                        class="block bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-lg transition duration-300">
+                        <img src="{{ post.image.url }}" alt="Cover for{{ post.title }}"
                             class="w-full h-48 object-cover">
-                            <div class="p-4">
-                                <h3 class="font-bold mb-2">{{ post.title }}</h3>
-                                <p class="text-sm text-gray-600 mb-2">By: {{ post.user.username }}</p>
-                                <div class="text-sm text-gray-500">Views: {{ post.view_count }}</div>
-                                <div class="text-sm text-gray-500">Posted on: {{ post.post_date|date:"F j, Y" }}</div>
-                            </div>
-                        </a>
+                        <div class="p-4">
+                            <h3 class="font-bold mb-2">{{ post.title }}</h3>
+                            <p class="text-sm text-gray-600 mb-2">By: {{ post.user.username }}</p>
+                            <div class="text-sm text-gray-500">Views: {{ post.view_count }}</div>
+                            <div class="text-sm text-gray-500">Posted on: {{ post.post_date|date:"F j, Y" }}</div>
+                        </div>
+                    </a>
                     {% endfor %}
                 </div>
             </div>
@@ -576,8 +673,9 @@
                     document.getElementById('search-results').style.display = 'none';
                 }
             }
-            </script>
+
+        </script>
 
     </htmlCode>
 </element>
-{% endblock  %}
+{% endblock %}
