@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login as auth_login, logout
 from .forms import CustomLoginForm, CustomRegisterForm
-from post.models import Profile , Post, Notification
+from post.models import Profile , Post, Notification, WebsiteUpdate
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from post.forms import PostForm
@@ -80,21 +80,49 @@ def about(request):
 
 def get_notifications(request):
     notifications = Notification.objects.filter(user=request.user).order_by('-created_at')
-    data = [{
+    website_updates = WebsiteUpdate.objects.order_by('-created_at')
+
+    notification_data = [{
         'id': n.id,
+        'type': 'comment',
         'post_title': n.post.title,
         'comment_content': n.comment.content,
         'is_read': n.is_read,
-        'comment_author': n.comment.user.username,  # Assuming the comment has a user field
-        'post_url': n.post.get_absolute_url()  # Assuming your Post model has a method to get the URL
+        'comment_author': n.comment.user.username,
     } for n in notifications]
-    return JsonResponse(data, safe=False)
 
-    return JsonResponse(data, safe=False)
+    update_data = [{
+        'id': update.id,
+        'type': 'update',
+        'title': update.title,
+        'content': update.content,
+        'created_at': update.created_at.strftime('%Y-%m-%d %H:%M:%S'),
+    } for update in website_updates]
+
+    # Combine comment and update notifications
+    all_notifications = notification_data + update_data
+
+    # Sort by created_at (for updates) and `created_at` assumed in Notification
+    sorted_notifications = sorted(all_notifications, key=lambda x: x.get('created_at', ''), reverse=True)
+
+    return JsonResponse(sorted_notifications, safe=False)
+
 
 def mark_as_read(request, id):
     notification = Notification.objects.get(id=id)
     notification.is_read = True
     notification.save()
     return HttpResponse(status=204)
+
+def delete_notification(request, notification_id):
+    try:
+        notification = Notification.objects.get(id=notification_id)
+        notification.delete()
+        return JsonResponse({'success': True})
+    except Notification.DoesNotExist:
+        return JsonResponse({'success': False, 'error': 'Notification not found'}, status=404)
+
+
+def fule (request):
+    return render(request, 'website/fule.html')
 

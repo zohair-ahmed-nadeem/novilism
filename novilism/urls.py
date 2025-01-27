@@ -8,7 +8,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', post_views.home, name='home'),
-    path('post/', include('post.urls')),
+    path('story/', include('post.urls')),
     path('login/', views.login_view, name='login'),
     path('register/', views.register_view, name='register'),
     path('logout/', views.logout_view, name='logout'),
@@ -19,6 +19,7 @@ urlpatterns = [
     path('about/', views.about, name='about'),
     path('get_notifications/', views.get_notifications, name='get_notifications'),
     path('mark_as_read/<int:id>/', views.mark_as_read, name='mark_as_read'),
+    path('fule/', views.fule,name='fule'),
 ]
 
 if settings.DEBUG:

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Feedback, Collaborator, Report, Post
+from .models import Feedback, Collaborator, Report, Post, WebsiteUpdate
 
 admin.site.register(Feedback)
 admin.site.register(Collaborator)
@@ -17,3 +17,9 @@ class PostAdmin(admin.ModelAdmin):
     actions = ['delete_selected']
 
 admin.site.register(Post, PostAdmin)
+
+@admin.register(WebsiteUpdate)
+class WebsiteUpdateAdmin(admin.ModelAdmin):
+    list_display = ('title', 'created_at')
+    search_fields = ('title',)
+    ordering = ('-created_at',)

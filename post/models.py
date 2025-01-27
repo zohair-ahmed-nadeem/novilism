@@ -28,8 +28,7 @@ class Post(models.Model):
     tags = models.CharField(max_length=1, choices=STORY_TYPES, default='G')
     view_count = models.PositiveIntegerField(default=0)
     likes = models.ManyToManyField(User, related_name='post_likes', blank=True)
-    def get_absolute_url(self):
-        return reverse('post_detail', kwargs={'pk': self.pk})  # Adjust the URL pattern as needed
+
 
     def __str__(self):
         return self.title
@@ -103,4 +102,10 @@ class Notification(models.Model):
     is_read = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
+class WebsiteUpdate(models.Model):
+    title = models.CharField(max_length=255)
+    content = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return self.title

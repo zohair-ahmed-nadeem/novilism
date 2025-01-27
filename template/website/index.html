@@ -461,17 +461,18 @@
                 </div>
             </div>
             <script>
+                // Toggle notification popup visibility
                 function toggleNotifications() {
                     let popup = document.getElementById('notificationPopup');
                     popup.classList.toggle('hidden');
-
+            
                     // Fetch notifications when opening popup
                     if (!popup.classList.contains('hidden')) {
                         fetchNotifications();
                     }
-                    
                 }
-
+            
+                // Fetch notifications and update the list
                 function fetchNotifications() {
                     fetch("{% url 'get_notifications' %}", { 
                         method: 'GET',
@@ -480,55 +481,79 @@
                     .then(response => response.json())
                     .then(data => {
                         let notificationList = document.getElementById('notificationList');
-                        notificationList.innerHTML = '';
-
+                        notificationList.innerHTML = '';  // Clear previous notifications
+            
                         if (data.length === 0) {
                             notificationList.innerHTML = '<p class="p-4 text-gray-500 text-center">No new notifications</p>';
                         } else {
                             data.forEach(notification => {
-                                let notificationItem = `
-                                    <div class="p-4 border-b flex justify-between items-start gap-4 ${notification.is_read ? 'bg-gray-100' : 'bg-blue-100'} rounded-lg shadow-md">
-                                        <div class="flex items-center gap-3">
-                                            <div>
-                                                <p class="text-gray-800 font-semibold">
-                                                    <strong>${notification.comment_author}</strong> commented on 
-                                                    <a href="${notification.post_url}" class="text-blue-600 hover:underline">${notification.post_title}</a>:
-                                                </p>
-                                                <p class="text-gray-600 mt-1 text-sm">${notification.comment_content}</p>
+                                let notificationItem = '';
+            
+                                // Handling comment type notifications
+                                if (notification.type === 'comment') {
+                                    notificationItem = `
+                                        <div class="p-4 border-b flex justify-between items-start gap-4 ${notification.is_read ? 'bg-gray-100' : 'bg-blue-100'} rounded-lg shadow-md">
+                                            <div class="flex items-center gap-3">
+                                                <div>
+                                                    <p class="text-gray-800 font-semibold">
+                                                        <strong class="text-gray-500">${notification.comment_author}</strong> commented on 
+                                                        <span class="text-blue-600 hover:underline">${notification.post_title}</span>:
+                                                    </p>
+                                                    <p class="text-gray-600 mt-2 text-sm break-words max-w-[25ch]">${notification.comment_content}</p>
+                                                </div>
+                                            </div>
+                                            <div class="flex-shrink-0 flex flex-col items-end gap-2">
+                                                ${notification.is_read 
+                                                    ? '' 
+                                                    : `<button onclick="markAsRead(${notification.id}, this)" 
+                                                            class="px-3 py-1 bg-blue-500 hover:bg-blue-600 text-white rounded-lg text-xs font-medium transition-all duration-300">
+                                                            Mark as read
+                                                        </button>`
+                                                }
                                             </div>
                                         </div>
-                                        ${!notification.is_read ? `
-                                            <button onclick="markAsRead(${notification.id}, this)" 
-                                                class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg text-sm font-medium transition-all duration-300">
-                                                Mark as read
-                                            </button>` : ''}
-                                    </div>`;
+                                    `;
+                                } 
+                                // Handling update type notifications
+                                else if (notification.type === 'update') {
+                                    notificationItem = `
+                                        <div class="p-4 border-b flex flex-col gap-2 bg-yellow-100 rounded-lg shadow-md">
+                                            <p class="text-gray-800 font-semibold">${notification.title}</p>
+                                            <p class="text-gray-600 text-sm">${notification.content}</p>
+                                            <span class="text-gray-500 text-xs">${notification.created_at}</span>
+                                        </div>`;
+                                }
+            
                                 notificationList.innerHTML += notificationItem;
                             });
                         }
-
+            
                         // Update notification count badge
-                        const unreadCount = data.filter(n => !n.is_read).length;
+                        const unreadCount = data.filter(n => n.type === 'comment' && !n.is_read).length;
+                        const notificationCount = document.getElementById('notificationCount');
                         notificationCount.textContent = unreadCount > 0 ? unreadCount : '';
                     })
                     .catch(error => console.error('Error fetching notifications:', error));
                 }
-                
-
+            
+                // Mark a notification as read
                 function markAsRead(id, element) {
                     fetch(`/mark_as_read/${id}/`, {
                         method: 'POST',
-                        headers: { 'X-CSRFToken': '{{ csrf_token }}' },
-                    }).then(() => {
+                        headers: { 'X-CSRFToken': '{{ csrf_token }}' }
+                    })
+                    .then(() => {
                         element.parentElement.classList.add('bg-gray-100');
-                        element.remove();
-                        fetchNotifications(); // Refresh the list
+                        element.remove();  // Remove "Mark as read" button
+                        fetchNotifications();  // Refresh the list
                     });
                 }
-
+        
+                
                 // Initial notification count load
                 document.addEventListener('DOMContentLoaded', fetchNotifications);
             </script>
+            
 
             <!-- Mobile Filter Dialog -->
             <div id="filterDialog" class="hidden fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title"
@@ -544,20 +569,20 @@
                                 </button>
                             </div>
                             <form method="get" action="{% url 'home' %}" class="space-y-4">
-                                <select name="tag" class="w-full px-4 py-2 border border-gray-200 rounded-lg">
-                                    <option value="">All Categories</option>
-                                    <option value="F">Fiction</option>
-                                    <option value="N">Non-Fiction</option>
-                                    <option value="P">Poetry</option>
-                                    <option value="R">Romantic</option>
-                                    <option value="H">Horror</option>
-                                    <option value="S">Science Fiction</option>
-                                    <option value="M">Mystery</option>
-                                    <option value="C">Comedy</option>
-                                    <option value="D">Drama</option>
-                                    <option value="A">Action</option>
-                                    <option value="T">Thriller</option>
-                                    <option value="G">General</option>
+                                <select name="tag" id="tag">
+                                    <option value="">All</option>
+                                    <option value="F" {% if tag == "F" %}selected{% endif %}>Fiction</option>
+                                    <option value="N" {% if tag == "N" %}selected{% endif %}>Non-Fiction</option>
+                                    <option value="P" {% if tag == "P" %}selected{% endif %}>Poetry</option>
+                                    <option value="R" {% if tag == "R" %}selected{% endif %}>Romantic</option>
+                                    <option value="H" {% if tag == "H" %}selected{% endif %}>Horror</option>
+                                    <option value="S" {% if tag == "S" %}selected{% endif %}>Science Fiction</option>
+                                    <option value="M" {% if tag == "M" %}selected{% endif %}>Mystery</option>
+                                    <option value="C" {% if tag == "C" %}selected{% endif %}>Comedy</option>
+                                    <option value="D" {% if tag == "D" %}selected{% endif %}>Drama</option>
+                                    <option value="A" {% if tag == "A" %}selected{% endif %}>Action</option>
+                                    <option value="T" {% if tag == "T" %}selected{% endif %}>Thriller</option>
+                                    <option value="G" {% if tag == "G" %}selected{% endif %}>General</option>
                                 </select>
                                 <button type="submit"
                                     class="w-full px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-700">
@@ -646,6 +671,7 @@
                     <a href="{% url 'about' %}" class="hover:text-gray-900">About Developer</a>
                     <a href="{% url 'feedback' %}" class="hover:text-gray-900">Feedback</a>
                     <a href="{% url 'collaborators' %}" class="hover:text-gray-900">Collaborators</a>
+                    <a href="{% url 'fule' %}" class="hover:text-gray-900">Fule</a>
                 </div>
             </footer>
         </section>
@@ -661,7 +687,7 @@
                             if (data.length > 0) {
                                 data.forEach(post => {
                                     const postElement = document.createElement('div');
-                                    postElement.innerHTML = `<a href="/post/${post.id}/" style="display: block; padding: 10px; text-decoration: none; color: black;">${post.title}</a>`;
+                                    postElement.innerHTML = `<a href="/post/${post.id}/" style="display: block; padding: 10px; text-decoration: none; color: black;">${post.title} by ${post.user__username} </a>`;
                                     searchResults.appendChild(postElement);
                                 });
                                 searchResults.style.display = 'block';

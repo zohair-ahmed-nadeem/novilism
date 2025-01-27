@@ -143,6 +143,6 @@ def report_post_view(request, post_id):
 def search_posts(request):
     if 'q' in request.GET:
         query = request.GET.get('q')
-        posts = Post.objects.filter(title__icontains=query).values('id', 'title')
+        posts = Post.objects.filter(title__icontains=query).values('id', 'title','user__username')
         return JsonResponse(list(posts), safe=False)
     return JsonResponse([], safe=False)

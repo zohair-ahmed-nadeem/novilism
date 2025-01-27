@@ -1,17 +1,17 @@
+{% extends "layout.html" %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="keywords" content="">
+    <meta name="description" content="{{project.meta.ogDescription}}">
     <meta name="theme-color" content="#ffffff">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="robots" content="index, follow">
-    <title>{% block title %}{% endblock %}</title>
+    <meta name="robots" content="{{project.meta.robotsMeta}}">
 
+    <title>{{project.seoTitle}}</title>
+    <!-- SEO Description -->
+    <meta name="description" content="{{project.seoDescription}}">
     <!-- Performance optimization: Preload critical resources -->
     <link rel="preload" href="https://cdn.tailwindcss.com" as="script">
     <link rel="preload"
@@ -165,6 +165,25 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- Dynamic Meta Tags -->
+    <meta name="description" content="{{project.meta.ogDescription}}">
+    <meta name="keywords" content="{{project.meta.keywords}}">
+    <meta name="robots" content="{{project.meta.robotsMeta}}">
+    <meta name="google-site-verification" content="{{project.meta.googleVerification}}">
+    <meta name="baidu-verification" content="{{project.meta.baiduVerification}}">
+    <meta name="yandex-verification" content="{{project.meta.yandexVerification}}">
+    <meta name="bing-verification" content="{{project.meta.bingVerification}}">
+    <meta property="og:title" content="{{project.meta.ogTitle}}">
+    <meta property="og:description" content="{{project.meta.ogDescription}}">
+    <meta property="og:image" content="{{project.meta.ogImage}}">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:site_name" content="{{project.name}}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{project.meta.ogTitle}}">
+    <meta name="twitter:description" content="{{project.meta.ogDescription}}">
+    <meta name="twitter:image" content="{{project.meta.ogImage}}">
 
     <!-- Base Styles -->
     <style>
@@ -346,198 +365,144 @@
     </script>
 </head>
 
-<body class="antialiased text-gray-800 min-h-screen flex flex-col">
-    <!-- Skip to main content link for accessibility -->
-    <a href="#main-content"
-        class="sr-only focus:not-sr-only focus:absolute focus:top-0 focus:left-0 focus:z-50 focus:p-4 focus:bg-white focus:text-black">
-        Skip to main content
-    </a>
+{% block tittle %} Novelism - Fule Uss {% endblock %}
 
-    <!-- Header -->
-    <!-- <header class="relative z-50 bg-white dark:bg-gray-900"> -->
-    <!-- Header content goes here -->
-    <!-- </header> -->
+{% block content %}~
 
-    <!-- Main content area -->
-    <!-- <main id="main-content" class="flex-1 relative "> -->
-    <!-- Content will be injected here -->
-    <!-- </main> -->
-
-    <!-- {bodyScripts} -->
-
-</body>
-
-</html>
-<element id="6abdb9b0-ad87-43ec-9565-bba46567b6d6" data-section-id="6abdb9b0-ad87-43ec-9565-bba46567b6d6">
-
-    <htmlCode>
-        <!DOCTYPE html>
-        <html lang="en">
-
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <script src="https://cdn.tailwindcss.com"></script>
-            <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-            <style>
-                [x-cloak] {
-                    display: none !important;
-                }
-
-                html {
-                    scroll-behavior: smooth;
-                }
-
-                .active-link {
-                    background-color: #f7fafc;
-                    /* bg-gray-100 */
-                    color: #1a202c;
-                    /* text-gray-900 */
-                }
-
-                .nav-link:hover {
-                    background-color: #f7fafc;
-                    /* bg-gray-100 */
-                    color: #1a202c;
-                    /* text-gray-900 */
-                    transition-property: color, background-color;
-                    transition-duration: 200ms;
-                }
-            </style>
-        </head>
-
-        <body class="bg-[#E5E7EB]" x-data="{ isOpen: false }"
-            @resize.window="if (window.innerWidth > 1024) isOpen = false">
-            <div class="flex" id="root">
-                <div class="relative">
-
-                    <!-- Mobile Menu Button -->
-                    <button type="button"
-                        class="lg:hidden fixed top-4 left-4 z-50 rounded-lg p-2 bg-white text-gray-600 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-200"
-                        @click="isOpen = !isOpen" :aria-expanded="isOpen">
-                        <svg x-show="!isOpen" class="w-9 h-9" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M4 6h16M4 12h16M4 18h16"></path>
-                        </svg>
-                        <svg x-show="isOpen" x-cloak class="w-9 h-9" fill="none" stroke="currentColor"
-                            viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M6 18L18 6M6 6l12 12"></path>
-                        </svg>
-                    </button>
-
-                    <!-- Desktop Menu Button -->
-                    <button type="button"
-                        class="hidden lg:block fixed top-10 left-4 rounded-lg p-2 bg-white text-gray-600 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-200"
-                        @click="isOpen = !isOpen" :aria-expanded="isOpen">
-                        <svg x-show="!isOpen" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M4 6h16M4 12h16M4 18h16"></path>
-                        </svg>
-                        <svg x-show="isOpen" x-cloak class="w-9 h-9" fill="none" stroke="currentColor"
-                            viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M6 18L18 6M6 6l12 12"></path>
-                        </svg>
-                    </button>
-
-
-                    <!-- Navigation -->
-                    <nav class="fixed h-screen w-64 bg-white border-r border-gray-200 z-[9999]" x-show="isOpen"
-                        @click.away="if (window.innerWidth <= 1024) isOpen = false">
-
-                        <div class="p-6">
-                            <div class="flex items-center justify-between mb-8">
-                                <span class="text-2xl font-bold text-gray-800">Novelism</span>
-                                <!-- Mobile close button -->
-                                <button @click="isOpen = false" class="lg:hidden text-gray-600 hover:text-gray-900">
-                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M6 18L18 6M6 6l12 12"></path>
-                                    </svg>
-                                </button>
-                                <!-- Desktop close button -->
-                                <button @click="isOpen = false"
-                                    class="hidden lg:block text-gray-600 hover:text-gray-900">
-                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M6 18L18 6M6 6l12 12"></path>
-                                    </svg>
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="space-y-4">
-                            <a href="{% url 'home' %}"
-                                class="nav-link block px-4 py-2 text-gray-600 rounded-lg">Home</a>
-                            <!-- <a href="#posts" class="nav-link block px-4 py-2 text-gray-600 rounded-lg">Posts</a> -->
-                            <a href="{% url 'create_post' %}"
-                                class="nav-link block px-4 py-2 text-gray-600 rounded-lg">Create</a>
-                            <a href="{% url 'collaborators' %}"
-                                class="nav-link block px-4 py-2 text-gray-600 rounded-lg">Collaborators</a>
-                            <a href="{% url 'feedback' %}"
-                                class="nav-link block px-4 py-2 text-gray-600 rounded-lg">Feedback</a>
-                            <a href="{% url 'fule' %}"
-                                class="nav-link block px-4 py-2 text-gray-600 rounded-lg">Fule Uss</a>
-                            <a href="{% url 'about' %}"
-                                class="nav-link block px-4 py-2 text-gray-600 rounded-lg">About</a>
-                        </div>
-
-                        <div class="absolute bottom-0 left-0 right-0 p-6" x-show="isOpen"
-                            @click.away="if (window.innerWidth <= 1024) isOpen = false">
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center space-x-2">
-                                    <span class="text-sm text-gray-600 z-[9999]">
-                                        {% if user.is_authenticated %}
-                                        <!-- <img src="https://avatar.iran.liara.run/public" alt="Profile"
-                                                class="w-8 h-8 rounded-full"> -->
-                                        <span>{{ user.username }}</span>
-                                        <button class="text-gray-600 hover:text-gray-900 ml-40"
-                                            onclick="window.location.href = '{% url 'logout' %}'">
-                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1">
-                                                </path>
-                                            </svg>
-                                        </button>
-                                        {% else %}
-                                        <a class="text-gray-600 hover:text-gray-900 ml-6 mr-6"
-                                            href="{% url 'login' %}">Login</a>
-                                        <a class="text-gray-600 hover:text-gray-900 ml-6 mr-6"
-                                            href="{% url 'register' %}">Register</a>
-                                        {% endif %}
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
+<htmlCode>
+    <div id="root">
+      <div class="min-h-screen bg-gray-100">
+        <section id="PaymentSelection" class="py-20">
+          <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto">
+              <h2 class="text-3xl font-bold text-center mb-12">Select Payment Method</h2>
+              
+              <div class="grid md:grid-cols-2 gap-8">
+                <!-- PayTM Option -->
+                <div class="group cursor-pointer" x-data="{ jazz: false }">
+                  <div class="bg-white rounded-lg p-6 shadow hover:shadow-lg transition duration-300" @click="jazz = true">
+                    <div class="flex justify-center items-center h-40">
+                      <img src="https://www.jazzcash.com.pk/assets/themes/jazzcash/img/jazzcash-logo.png" alt="jazzcash" class="h-18 object-contain">
                     </div>
-                </nav>
+                  </div>
+                  
+                  <!-- PayTM QR Modal -->
+                  <div x-show="jazz" x-cloak class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+                    <div class="bg-white p-8 rounded-lg max-w-md w-full mx-4" @click.away="jazz = false">
+                      <div class="flex justify-between items-center mb-6">
+                        <img src="https://www.jazzcash.com.pk/assets/themes/jazzcash/img/jazzcash-logo.png" alt="PayTM" class="h-8">
+                        <button @click="showPayTM = false" class="text-gray-500 hover:text-gray-700">
+                          <img src="https://pwebassets.paytm.com/commonwebassets/paytmweb/header/images/cross.svg" alt="Close" class="h-6 w-6">
+                        </button>
+                      </div>
+                      <div class="flex justify-center mb-6">
+                        <img src='{% static "image/jazz.png" %}' alt="PayTM QR Code" class="w-64 h-64">
+                      </div>
+                      <p class="text-center text-gray-600">Scan with jazzcash app to pay</p>
+                    </div>
+                  </div>
+                </div>
+    
+                <!-- PayPal Option -->
+                <div class="group cursor-pointer" x-data="{ showPayPal: false }">
+                  <div class="bg-white rounded-lg p-6 shadow hover:shadow-lg transition duration-300" @click="showPayPal = true">
+                    <div class="flex justify-center items-center h-40">
+                      <img src="https://easypaisa.com.pk/wp-content/uploads/2022/12/Group-129.png" alt="easypaisa" class="h-12 object-contain">
+                    </div>
+                  </div>
+                  
+                  <!-- PayPal QR Modal -->
+                  <div x-show="showPayPal" x-cloak class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+                    <div class="bg-white p-8 rounded-lg max-w-md w-full mx-4" @click.away="showPayPal = false">
+                      <div class="flex justify-between items-center mb-6">
+                        <img src="https://easypaisa.com.pk/wp-content/uploads/2022/12/Group-129.png" alt="easypaisa" class="h-8">
+                        <button @click="showPayPal = false" class="text-gray-500 hover:text-gray-700">
+                          <img src="https://pwebassets.paytm.com/commonwebassets/paytmweb/header/images/cross.svg" alt="Close" class="h-6 w-6">
+                        </button>
+                      </div>
+                      <div class="flex justify-center mb-6">
+                        <img src='{% static "image/easy.png" %}' alt="PayPal QR Code" class="w-64 h-64">
+                      </div>
+                      <p class="text-center text-gray-600">Scan with easypaisa app to pay</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
+          </div>
+        </section>
+      </div>
+    </div>
+    </htmlCode></element><element id="9207e57d-80b2-49a4-8489-cd3f88b80925" data-section-id="9207e57d-80b2-49a4-8489-cd3f88b80925">
+    
+    <htmlCode>
+    <div id="root">
+      <section id="PayTMQRCode" class="min-h-screen bg-gray-100 flex items-center justify-center">
+        <div class="max-w-3xl mx-auto p-8 bg-white rounded-xl shadow-lg">
+          <div class="flex justify-between items-center mb-8">
+            <img src="" alt="PayTM" class="h-12">
+            <a href="#PaymentSelection" class="text-gray-500 hover:text-gray-700">
+              <img src="https://pwebassets.paytm.com/commonwebassets/paytmweb/header/images/cross.svg" alt="Close" class="h-6 w-6">
+            </a>
+          </div>
+    
+          <div class="text-center mb-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">Scan & Pay with PayTM</h2>
+            <p class="text-gray-600">Use your PayTM app to scan the QR code below</p>
+          </div>
+    
+          <div class="flex justify-center mb-8">
+            <div class="p-4 border-2 border-blue-500 rounded-lg">
+              <img src="https://pwebassets.paytm.com/frontendcommonweb/static/e5e744ba..png" alt="jazzcash QR Code" class="w-72 h-72">
+            </div>
+          </div>
+    
+          <div class="text-center space-y-4">
+            <p class="text-gray-700 font-medium">Or pay using UPI ID</p>
+            <p class="text-blue-600 font-semibold">paytm-qr@paytm</p>
+            <div class="flex items-center justify-center gap-4">
+              <img src="https://pwebassets.paytm.com/commonwebassets/paytmweb/footer/images/trust.svg" alt="Trust" class="h-8">
+              <span class="text-gray-600">100% Secure Payments</span>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+    </htmlCode></element><element id="142798d9-70c2-46c0-9415-0fdb5a794dd8" data-section-id="142798d9-70c2-46c0-9415-0fdb5a794dd8">
+    
+    <htmlCode>
+    <div id="root">
+      <section id="PayPalQRCode" class="min-h-screen bg-gray-100 flex items-center justify-center">
+        <div class="max-w-3xl mx-auto p-8 bg-white rounded-xl shadow-lg">
+          <div class="flex justify-between items-center mb-8">
+            <img src="https://placehold.co/150x50?text=PayPal" alt="PayPal" class="h-12">
+            <a href="#PaymentSelection" class="text-gray-500 hover:text-gray-700">
+              <img src="https://pwebassets.paytm.com/commonwebassets/paytmweb/header/images/cross.svg" alt="Close" class="h-6 w-6">
+            </a>
+          </div>
+    
+          <div class="text-center mb-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">Scan & Pay with PayPal</h2>
+            <p class="text-gray-600">Use your PayPal app to scan the QR code below</p>
+          </div>
+    
+          <div class="flex justify-center mb-8">
+            <div class="p-4 border-2 border-blue-600 rounded-lg">
+              <img src="https://placehold.co/300x300?text=PayPal+QR+Code" alt="PayPal QR Code" class="w-72 h-72">
+            </div>
+          </div>
+    
+          <div class="text-center space-y-4">
+            <p class="text-gray-700 font-medium">Or use PayPal ID</p>
+            <p class="text-blue-600 font-semibold">payment@business.com</p>
+            <div class="flex items-center justify-center gap-4">
+              <img src="https://pwebassets.paytm.com/commonwebassets/paytmweb/footer/images/trust.svg" alt="Trust" class="h-8">
+              <span class="text-gray-600">Secure Payment Gateway</span>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+    </htmlCode>
 
-            <main class="flex-1 overflow-y-auto">
-                <div id="MountPoint">
-                    {% block content %}
-
-                    {% endblock %}
-
-                    <script>
-                        document.addEventListener('DOMContentLoaded', function () {
-                            // Active link handling
-                            const navLinks = document.querySelectorAll('.nav-link');
-
-                            function setActiveLink() {
-                                const hash = window.location.hash || '#home';
-                                navLinks.forEach(link => {
-                                    link.classList.remove('active-link');
-                                    if (link.getAttribute('href') === hash) {
-                                        link.classList.add('active-link');
-                                    }
-                                });
-                            }
-
-                            window.addEventListener('hashchange', setActiveLink);
-                            setActiveLink();
-                        });
-                    </script>
-                    </script>
-</element>
+{% endblock %}
