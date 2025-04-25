@@ -25,20 +25,24 @@ def create_post(request):
 
 def home(request):
     tag = request.GET.get('tag')
+    
+    # Filter posts by tag if provided
     if tag:
-        posts = Post.objects.filter(tags=tag)
+        posts = Post.objects.filter(tags__icontains=tag)  # Assuming `tags` is a CharField or use __name for related models
     else:
         posts = Post.objects.all()
 
+    # Get top 5 posts by views, likes, and recent
     top_viewed_posts = Post.objects.order_by('-view_count')[:5]
     top_liked_posts = Post.objects.annotate(like_count=Count('likes')).order_by('-like_count')[:5]
     recent_posts = Post.objects.order_by('-post_date')[:5]
+
+    # Get all collaborators
     collaborators = Collaborator.objects.all()
 
-    # Get random posts excluding the ones already selected
+    # Get random posts excluding selected ones
     selected_posts_ids = set(post.id for post in top_viewed_posts) | set(post.id for post in top_liked_posts) | set(post.id for post in recent_posts)
-    random_posts = Post.objects.exclude(id__in=selected_posts_ids)
-    random_posts = random.sample(list(random_posts), min(len(random_posts), 5))
+    random_posts = Post.objects.exclude(id__in=selected_posts_ids).order_by('?')[:5]
 
     return render(request, 'website/index.html', {
         'posts': posts,
@@ -49,7 +53,6 @@ def home(request):
         'random_posts': random_posts,
         'collaborators': collaborators,
     })
-
 
 def post_detail(request, post_id):
     post = get_object_or_404(Post, id=post_id)

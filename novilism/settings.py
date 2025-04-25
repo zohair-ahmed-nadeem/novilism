@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'post',
     'widget_tweaks',
+    'markdownx',
 ]
 
 MIDDLEWARE = [
@@ -84,7 +85,7 @@ DATABASES = {
     }
 }
 
-LOGIN_URL = '/login/'
+LOGIN_URL = 'login/'
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
@@ -136,3 +137,5 @@ SESSION_COOKIE_HTTPONLY = True
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+RECAPTCHA_SECRET_KEY = "6Lf_IccqAAAAADHEgEKpmQlzS1dk7z46fQ9ospsh"

@@ -1,11 +1,15 @@
 from django import forms
 from django.contrib.auth.models import User
 from .models import Post, Profile , Feedback, Report
+from markdownx.widgets import MarkdownxWidget
 
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = ['title', 'content', 'image', 'tags']
+        widgets = {
+            'content': MarkdownxWidget(),
+        }
 
 class ProfileForm(forms.ModelForm):
     username = forms.CharField(max_length=150, required=True, widget=forms.TextInput(attrs={'class': 'form-control'}))

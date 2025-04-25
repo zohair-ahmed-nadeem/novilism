@@ -1,6 +1,7 @@
 {% extends 'layout.html' %}
 {% load static %}
 {% load widget_tweaks %}
+
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 
@@ -428,7 +429,7 @@
                             <div onclick="event.stopPropagation();">
                                 <label for="id_content"
                                     class="block text-sm font-medium text-gray-700 mb-1">Content</label>
-                                {{ form.content|add_class:"w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-gray-400" }}
+                                {{ form.content|add_class:"w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-gray-400"|markdownify }}
                                 {% if form.content.errors %}
                                 <p class="text-red-500 text-xs mt-1">{{ form.content.errors.0 }}</p>
                                 {% endif %}
