@@ -27,9 +27,9 @@ SECRET_KEY = 'django-insecure-b$5x3&^$9n2fvsnty-+kke5b34_0h+4n0qpzmfx^tq3=3=cb0c
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
-
+STATICSTORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # Application definition
 
 INSTALLED_APPS = [
@@ -51,6 +51,7 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
@@ -139,3 +140,5 @@ SESSION_COOKIE_HTTPONLY = True
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 RECAPTCHA_SECRET_KEY = "6Lf_IccqAAAAADHEgEKpmQlzS1dk7z46fQ9ospsh"
+
+CSRF_TRUSTED_ORIGINS= [""]
