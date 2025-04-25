@@ -5,6 +5,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.urls import reverse
 from markdownx.models import MarkdownxField
+from markdownx.utils import markdownify
 
 class Post(models.Model):
     STORY_TYPES = (
@@ -31,8 +32,9 @@ class Post(models.Model):
     likes = models.ManyToManyField(User, related_name='post_likes', blank=True)
 
 
-    def __str__(self):
-        return self.title
+    def formatted_markdown(self):
+        html_content = markdownify(self.content)
+        return html_content
 
 class Comment(models.Model):
     post = models.ForeignKey(Post, related_name='comments', on_delete=models.CASCADE)
