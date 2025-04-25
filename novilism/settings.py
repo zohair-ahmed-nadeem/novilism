@@ -29,7 +29,6 @@ DEBUG = False
 
 ALLOWED_HOSTS = ["*"]
 
-STATICSTORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # Application definition
 
 INSTALLED_APPS = [
@@ -144,3 +143,5 @@ RECAPTCHA_SECRET_KEY = "6Lf_IccqAAAAADHEgEKpmQlzS1dk7z46fQ9ospsh"
 CSRF_TRUSTED_ORIGINS= ["https://novilism.up.railway.app"]
 
 LOGIN_URL = '/login/'   
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
