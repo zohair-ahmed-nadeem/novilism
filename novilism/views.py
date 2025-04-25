@@ -18,7 +18,10 @@ def login_view(request):
             if not hasattr(user, 'profile'):
                 Profile.objects.create(user=user)
             auth_login(request, user)
-            return redirect('home') 
+            
+            # Get the 'next' value from URL if exists, else redirect to home
+            next_url = request.GET.get('next') or 'home'
+            return redirect(next_url) 
     else:
         form = CustomLoginForm()
 

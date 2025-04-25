@@ -141,4 +141,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 RECAPTCHA_SECRET_KEY = "6Lf_IccqAAAAADHEgEKpmQlzS1dk7z46fQ9ospsh"
 
-CSRF_TRUSTED_ORIGINS= ["https://novilism.up.railway.app/"]
+CSRF_TRUSTED_ORIGINS= ["https://novilism.up.railway.app"]
+
+LOGIN_URL = '/login/'   
