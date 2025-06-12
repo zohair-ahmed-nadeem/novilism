@@ -25,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-b$5x3&^$9n2fvsnty-+kke5b34_0h+4n0qpzmfx^tq3=3=cb0c'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'post',
     'widget_tweaks',
-    'markdownx',
+    'ckeditor',
 ]
 
 MIDDLEWARE = [

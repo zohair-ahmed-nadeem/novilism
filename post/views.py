@@ -3,8 +3,9 @@ from django.contrib.auth.decorators import login_required
 from post.models import Post, Comment, Collaborator
 from post.forms import PostForm , ProfileForm, FeedbackForm, ReportForm
 from django.db.models import Count
-import random
 from django.http import JsonResponse
+from django.utils import timezone
+from datetime import timedelta
 
 
 @login_required
@@ -32,17 +33,27 @@ def home(request):
     else:
         posts = Post.objects.all()
 
-    # Get top 5 posts by views, likes, and recent
+    # Get current month range
+    now = timezone.now()
+    start_of_month = now.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
+    end_of_month = (start_of_month + timedelta(days=32)).replace(day=1)
+
+    # Get top 5 posts by views, likes, and recent, each in descending order
     top_viewed_posts = Post.objects.order_by('-view_count')[:5]
     top_liked_posts = Post.objects.annotate(like_count=Count('likes')).order_by('-like_count')[:5]
     recent_posts = Post.objects.order_by('-post_date')[:5]
+
+    # Ensure posts are in strict descending order (no ties)
+    top_viewed_posts = sorted(top_viewed_posts, key=lambda p: p.view_count, reverse=True)
+    top_liked_posts = sorted(top_liked_posts, key=lambda p: p.likes.count(), reverse=True)
+    recent_posts = sorted(recent_posts, key=lambda p: p.post_date, reverse=True)
 
     # Get all collaborators
     collaborators = Collaborator.objects.all()
 
     # Get random posts excluding selected ones
     selected_posts_ids = set(post.id for post in top_viewed_posts) | set(post.id for post in top_liked_posts) | set(post.id for post in recent_posts)
-    random_posts = Post.objects.exclude(id__in=selected_posts_ids).order_by('?')[:5]
+    random_posts = Post.objects.exclude(id__in=list(selected_posts_ids)).order_by('?')[:5]
 
     return render(request, 'website/index.html', {
         'posts': posts,

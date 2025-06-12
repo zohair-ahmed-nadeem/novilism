@@ -649,6 +649,7 @@
                     {% endfor %}
                 </div>
             </div>
+            <h2 class="text-2xl font-bold text-gray-800 mb-6">Collaborators</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {% for collaborator in collaborators %}
                 <div class="group">
@@ -664,6 +665,26 @@
                 {% endfor %}
             </div>
 
+            <!-- Random Books Section -->
+            <div class="mb-12">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6"></h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+                    <!-- Book Cards -->
+                    {% for post in posts %}
+                    <a href="{% url 'post_detail' post.id %}"
+                        class="block bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-lg transition duration-300">
+                        <img src="{{ post.image.url }}" alt="Cover for{{ post.title }}"
+                            class="w-full h-48 object-cover">
+                        <div class="p-4">
+                            <h3 class="font-bold mb-2">{{ post.title }}</h3>
+                            <p class="text-sm text-gray-600 mb-2">By: {{ post.user.username }}</p>
+                            <div class="text-sm text-gray-500">Views: {{ post.view_count }}</div>
+                            <div class="text-sm text-gray-500">Posted on: {{ post.post_date|date:"F j, Y" }}</div>
+                        </div>
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
 
             <!-- Footer Links -->
             <footer class="mt-12 py-6 border-t border-gray-200">

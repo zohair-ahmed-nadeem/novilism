@@ -3,9 +3,7 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from django.urls import reverse
-from markdownx.models import MarkdownxField
-from markdownx.utils import markdownify
+from ckeditor.fields import RichTextField
 
 class Post(models.Model):
     STORY_TYPES = (
@@ -24,17 +22,16 @@ class Post(models.Model):
     )
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
-    content = MarkdownxField()
+    content = RichTextField(blank=True, null=True)
     image = models.ImageField(upload_to='images/')
     post_date = models.DateTimeField(default=timezone.now)
-    tags = models.CharField(max_length=1, choices=STORY_TYPES, default='G')
+    tags = models.CharField(max_length=5, choices=STORY_TYPES, default='G')
     view_count = models.PositiveIntegerField(default=0)
     likes = models.ManyToManyField(User, related_name='post_likes', blank=True)
 
 
-    def formatted_markdown(self):
-        html_content = markdownify(self.content)
-        return html_content
+    def __str__(self):
+        return self.title
 
 class Comment(models.Model):
     post = models.ForeignKey(Post, related_name='comments', on_delete=models.CASCADE)

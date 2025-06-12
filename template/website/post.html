@@ -12,6 +12,9 @@
     <meta name="theme-color" content="#ffffff">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="robots" content="index, follow">
+    
+    {{ form.media }}
+    {% include 'django_quill/media.html' %}
 
     <!-- Performance optimization: Preload critical resources -->
     <link rel="preload" href="https://cdn.tailwindcss.com" as="script">
@@ -387,6 +390,8 @@
                         <form method="post" action="{% url 'create_post' %}" enctype="multipart/form-data"
                             class="space-y-6" onsubmit="return validateForm(event);">
                             {% csrf_token %}
+                            
+                            {{ form.media }}
                             <!-- Title -->
                             <div>
                                 <label for="id_title" class="block text-sm font-medium text-gray-700 mb-1">Title</label>
@@ -398,10 +403,8 @@
 
                             <!-- Image Upload -->
                             <div>
-                                <label for="id_image" class="block text-sm font-medium text-gray-700 mb-1">Book
-                                    Cover</label>
-                                <div
-                                    class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-lg">
+                                <label for="id_image" class="block text-sm font-medium text-gray-700 mb-1">Book Cover</label>
+                                <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-lg">
                                     <div class="space-y-1 text-center">
                                         <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none"
                                             viewBox="0 0 48 48">
@@ -409,12 +412,17 @@
                                                 d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
                                                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                                         </svg>
-                                        <div class="flex flex-col items-center text-sm text-gray-600"></div>
+                                        <div class="flex flex-col items-center text-sm text-gray-600">
                                             <input type="file" id="id_image" name="{{ form.image.name }}" 
-                                                class="hidden" accept="image/*">
-                                            <button type="button" onclick="document.getElementById('id_image').click()"
+                                                class="hidden" accept="image/*" onchange="handleImageChange(event)">
+                                            <button type="button" id="uploadBtn"
+                                                onclick="document.getElementById('id_image').click()"
                                                 class="px-4 py-2 bg-gray-100 rounded-md hover:bg-gray-200 transition-colors">
                                                 Upload Image
+                                            </button>
+                                            <div id="imagePreview" class="mt-2"></div>
+                                            <button type="button" id="removeBtn" onclick="removeImage()" class="hidden mt-2 px-3 py-1 bg-red-100 text-red-700 rounded hover:bg-red-200 text-xs">
+                                                Remove
                                             </button>
                                             <p class="mt-1">or drag and drop</p>
                                             {% if form.image.errors %}
@@ -424,12 +432,40 @@
                                     </div>
                                 </div>
                             </div>
+                            <script>
+                            function handleImageChange(event) {
+                                const input = event.target;
+                                const preview = document.getElementById('imagePreview');
+                                const removeBtn = document.getElementById('removeBtn');
+                                preview.innerHTML = '';
+                                if (input.files && input.files[0]) {
+                                    const reader = new FileReader();
+                                    reader.onload = function(e) {
+                                        const img = document.createElement('img');
+                                        img.src = e.target.result;
+                                        img.className = 'h-20 w-20 object-cover rounded mt-2 border';
+                                        preview.appendChild(img);
+                                        removeBtn.classList.remove('hidden');
+                                    }
+                                    reader.readAsDataURL(input.files[0]);
+                                } else {
+                                    removeBtn.classList.add('hidden');
+                                }
+                            }
+                            function removeImage() {
+                                const input = document.getElementById('id_image');
+                                const preview = document.getElementById('imagePreview');
+                                input.value = '';
+                                preview.innerHTML = '';
+                                document.getElementById('removeBtn').classList.add('hidden');
+                            }
+                            </script>
 
                             <!-- Content -->
                             <div onclick="event.stopPropagation();">
                                 <label for="id_content"
                                     class="block text-sm font-medium text-gray-700 mb-1">Content</label>
-                                {{ form.content|add_class:"w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-gray-400" }}
+                                {{ form.content |add_class:"w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-gray-400" }}
                                 
                                 {% if form.content.errors %}
                                 <p class="text-red-500 text-xs mt-1">{{ form.content.errors.0 }}</p>
@@ -438,13 +474,43 @@
 
                             <!-- Tags -->
                             <div onclick="event.stopPropagation();">
-                                <label for="id_tags" class="block text-sm font-medium text-gray-700 mb-1">Select
-                                    Tags</label>
+                                <label for="id_tags" class="block text-sm font-medium text-gray-700 mb-1">Select Tag</label>
                                 {{ form.tags|add_class:"w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-gray-400" }}
                                 {% if form.tags.errors %}
                                 <p class="text-red-500 text-xs mt-1">{{ form.tags.errors.0 }}</p>
                                 {% endif %}
+                                <div id="selected-tags" class="flex flex-wrap gap-2 mt-2"></div>
                             </div>
+                            <script>
+                                // Limit tag selection to 5 and show selected tags
+                                document.addEventListener('DOMContentLoaded', function() {
+                                    const tagSelect = document.getElementById('id_tags');
+                                    const selectedTagsDiv = document.getElementById('selected-tags');
+                                    function updateSelectedTags() {
+                                        if (!tagSelect) return;
+                                        const selected = Array.from(tagSelect.selectedOptions);
+                                        selectedTagsDiv.innerHTML = '';
+                                        selected.forEach(option => {
+                                            const span = document.createElement('span');
+                                            span.className = 'inline-block bg-gray-200 text-gray-700 px-2 py-1 rounded text-xs';
+                                            span.textContent = option.text;
+                                            selectedTagsDiv.appendChild(span);
+                                        });
+                                    }
+                                    if (tagSelect && tagSelect.multiple) {
+                                        tagSelect.addEventListener('change', function() {
+                                            const selected = Array.from(tagSelect.selectedOptions);
+                                            if (selected.length > 5) {
+                                                // Deselect the last selected option
+                                                selected[selected.length - 1].selected = false;
+                                                alert('You can select up to 5 tags only.');
+                                            }
+                                            updateSelectedTags();
+                                        });
+                                        updateSelectedTags();
+                                    }
+                                });
+                            </script>
 
                             <div class="mt-6 flex justify-end gap-4"></div>
                                 <button type="submit"
