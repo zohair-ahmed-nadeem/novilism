@@ -9,7 +9,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', post_views.home, name='home'),
     path('story/', include('post.urls')),
-    path("markdownx/", include("markdownx.urls")),
+    path('user/', include('user.url') ),
     path('login/', views.login_view, name='login'),
     path('register/', views.register_view, name='register'),
     path('logout/', views.logout_view, name='logout'),

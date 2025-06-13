@@ -424,8 +424,7 @@
                         <a href="#" class="lg:hidden px-3 py-2 bg-gray-100 rounded-lg">
                             <i class="fas fa-user text-gray-600"></i>
                         </a>
-                        <p
-                            class="hidden lg:block px-6 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors">
+                        <p class="hidden lg:block px-6 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors" onclick="toggleProfile()">
                             {{ user.username }}</p>
                         <button class="relative px-3 py-2 bg-gray-100 rounded-lg" onclick="toggleNotifications()">
                             <i class="fas fa-bell text-gray-600"></i>
@@ -434,8 +433,8 @@
                         </button>
 
                         <div id="notificationPopup"
-                            class="hidden absolute right-0 mt-2 w-80 bg-white border border-gray-300 shadow-lg rounded-lg overflow-hidden z-50 mr-4">
-                            <div class="p-4 border-b">
+                            class="hidden absolute right-0 mt-12 w-80 bg-white border border-gray-300 shadow-lg rounded-lg overflow-hidden z-50 mr-4">
+                            <div class="p-4  border-b">
                                 <div class="p-4 border-b flex justify-between items-center">
                                     <h3 class="text-lg font-semibold text-gray-700">Notifications</h3>
                                     <svg onclick="toggleNotifications()" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 cursor-pointer text-gray-500 hover:text-gray-700 transition-all">
@@ -446,6 +445,28 @@
                             <div id="notificationList" class="max-h-60 overflow-y-auto">
                                 <p class="p-4 text-gray-500 text-center">No new notifications</p>
                             </div>
+                        </div>
+
+                        <!-- Profile Popup -->
+                        <div id="profilePopup"
+                            class="hidden absolute right-0 top-22 mr-6 w-64 bg-white border border-gray-200 shadow-xl rounded-xl z-50">
+                            <div class="px-6 pt-5 pb-4 border-b border-gray-100">
+                                <p class="font-bold text-gray-800 mb-1">{{ user.username }}</p>
+                            </div>
+                            <ul class="py-2">
+                                <li>
+                                    <a href="{% url 'profile' %}" 
+                                    class="block px-6 py-3 text-gray-700 hover:bg-gray-100 hover:text-blue-600 rounded-none transition-colors duration-150">
+                                        Profile
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'logout' %}" 
+                                    class="block px-6 py-3 text-gray-700 hover:bg-red-50 hover:text-red-600 rounded-none transition-colors duration-150">
+                                        Logout
+                                    </a>
+                                </li>
+                            </ul>
                         </div>
 
                         {% else %}
@@ -471,87 +492,20 @@
                         fetchNotifications();
                     }
                 }
-            
-                // Fetch notifications and update the list
-                function fetchNotifications() {
-                    fetch("{% url 'get_notifications' %}", { 
-                        method: 'GET',
-                        headers: { 'X-Requested-With': 'XMLHttpRequest' }
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        let notificationList = document.getElementById('notificationList');
-                        notificationList.innerHTML = '';  // Clear previous notifications
-            
-                        if (data.length === 0) {
-                            notificationList.innerHTML = '<p class="p-4 text-gray-500 text-center">No new notifications</p>';
-                        } else {
-                            data.forEach(notification => {
-                                let notificationItem = '';
-            
-                                // Handling comment type notifications
-                                if (notification.type === 'comment') {
-                                    notificationItem = `
-                                        <div class="p-4 border-b flex justify-between items-start gap-4 ${notification.is_read ? 'bg-gray-100' : 'bg-blue-100'} rounded-lg shadow-md">
-                                            <div class="flex items-center gap-3">
-                                                <div>
-                                                    <p class="text-gray-800 font-semibold">
-                                                        <strong class="text-gray-500">${notification.comment_author}</strong> commented on 
-                                                        <span class="text-blue-600 hover:underline">${notification.post_title}</span>:
-                                                    </p>
-                                                    <p class="text-gray-600 mt-2 text-sm break-words max-w-[25ch]">${notification.comment_content}</p>
-                                                </div>
-                                            </div>
-                                            <div class="flex-shrink-0 flex flex-col items-end gap-2">
-                                                ${notification.is_read 
-                                                    ? '' 
-                                                    : `<button onclick="markAsRead(${notification.id}, this)" 
-                                                            class="px-3 py-1 bg-blue-500 hover:bg-blue-600 text-white rounded-lg text-xs font-medium transition-all duration-300">
-                                                            Mark as read
-                                                        </button>`
-                                                }
-                                            </div>
-                                        </div>
-                                    `;
-                                } 
-                                // Handling update type notifications
-                                else if (notification.type === 'update') {
-                                    notificationItem = `
-                                        <div class="p-4 border-b flex flex-col gap-2 bg-yellow-100 rounded-lg shadow-md">
-                                            <p class="text-gray-800 font-semibold">${notification.title}</p>
-                                            <p class="text-gray-600 text-sm">${notification.content}</p>
-                                            <span class="text-gray-500 text-xs">${notification.created_at}</span>
-                                        </div>`;
-                                }
-            
-                                notificationList.innerHTML += notificationItem;
-                            });
-                        }
-            
-                        // Update notification count badge
-                        const unreadCount = data.filter(n => n.type === 'comment' && !n.is_read).length;
-                        const notificationCount = document.getElementById('notificationCount');
-                        notificationCount.textContent = unreadCount > 0 ? unreadCount : '';
-                    })
-                    .catch(error => console.error('Error fetching notifications:', error));
+
+                function toggleProfile() {
+                    // Toggle profile dropdown visibility
+                    let profileDropdown = document.getElementById('profilePopup');
+                    profileDropdown.classList.toggle('hidden');
+
+                    // Fetch user profile data when opening dropdown
+                    if (!profileDropdown.classList.contains('hidden')) {
+                        // Fetch user profile data if needed
+                        fetchUserProfile();
+                    }
                 }
             
-                // Mark a notification as read
-                function markAsRead(id, element) {
-                    fetch(`/mark_as_read/${id}/`, {
-                        method: 'POST',
-                        headers: { 'X-CSRFToken': '{{ csrf_token }}' }
-                    })
-                    .then(() => {
-                        element.parentElement.classList.add('bg-gray-100');
-                        element.remove();  // Remove "Mark as read" button
-                        fetchNotifications();  // Refresh the list
-                    });
-                }
-        
-                
-                // Initial notification count load
-                document.addEventListener('DOMContentLoaded', fetchNotifications);
+             
             </script>
             
 

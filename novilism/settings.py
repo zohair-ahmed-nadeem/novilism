@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'post',
     'widget_tweaks',
     'ckeditor',
+    'user',
 ]
 
 MIDDLEWARE = [
