@@ -5,6 +5,7 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('create/', views.create_post, name='create_post'),
+    path('account/',include('django.contrib.auth.urls')),
     path('',views.home, name='post'),
     path('<int:post_id>/', views.post_detail, name='post_detail'),
     path('<int:post_id>/edit/', views.edit_post_view, name='edit_post'),

@@ -43,17 +43,12 @@ class Comment(models.Model):
         return f'Comment by {self.user.username} on {self.post.title}'
 
 class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    name = models.CharField(max_length=100)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='post_profile')
     profile_picture = models.ImageField(upload_to='pfp/', blank=True, null=True)
 
-@receiver(post_save, sender=User)
-def create_profile(sender, instance, created, **kwargs):
-    if created and not hasattr(instance, 'profile'):
-        Profile.objects.create(user=instance)
-
-@receiver(post_save, sender=User)
-def save_user_profile(sender, instance, **kwargs):
-    instance.profile.save()
+    def __str__(self):
+        return self.user.username
     
 class Feedback(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)

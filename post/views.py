@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
-from post.models import Post, Comment, Collaborator
+from post.models import Post, Comment, Collaborator, Profile
 from post.forms import PostForm , ProfileForm, FeedbackForm, ReportForm
 from django.db.models import Count
 from django.http import JsonResponse
@@ -160,3 +160,18 @@ def search_posts(request):
         posts = Post.objects.filter(title__icontains=query).values('id', 'title','user__username')
         return JsonResponse(list(posts), safe=False)
     return JsonResponse([], safe=False)
+
+@login_required
+def edit_profile_view(request):
+    profile, created = Profile.objects.get_or_create(user=request.user)
+    if request.method == 'POST':
+        form = ProfileForm(request.POST, request.FILES, instance=profile, user=request.user)
+        name = request.POST.get('name')
+        if form.is_valid():
+            profile = form.save(commit=False)
+            profile.name = name
+            profile.save()
+            return redirect('profile')
+    else:
+        form = ProfileForm(instance=profile, user=request.user)
+    return render(request, 'website/profile.html', {'form': form})
